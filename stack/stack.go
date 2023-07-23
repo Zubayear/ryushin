@@ -54,5 +54,5 @@ func (s *Stack[T]) IsEmpty() bool {
 
 // IsFull check if stack is full
 func (s *Stack[T]) IsFull() bool {
-	return s.top > len(s.data)
+	return s.Size() >= len(s.data)
 }

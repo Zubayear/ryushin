@@ -25,7 +25,7 @@ func TestStack_IsFull(t *testing.T) {
 	stack.Push(10)
 	stack.Push(10)
 	got := stack.IsFull()
-	if got {
+	if !got {
 		t.Errorf("got = %v, want %v", got, false)
 	}
 }
