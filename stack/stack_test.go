@@ -1,88 +1,34 @@
-package stack
+package stack_test
 
 import (
+	"github.com/Zubayear/sonic/stack"
 	"testing"
 )
 
-func TestStack_IsEmpty(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(10)
-	stack.Push(10)
-	got := stack.IsEmpty()
-	if got {
-		t.Errorf("got = %v, want %v", got, false)
-	}
-}
+func TestAllOperation(t *testing.T) {
+	s := stack.NewStack[int]()
+	_, _ = s.Push(1)
+	_, _ = s.Push(2)
+	_, _ = s.Push(3)
 
-func TestStack_IsFull(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(10)
-	stack.Push(10)
-	got := stack.IsFull()
-	if !got {
-		t.Errorf("got = %v, want %v", got, false)
+	value, err := s.Peek()
+	if err != nil || value != 3 {
+		t.Errorf("Expected top element to be 3, got %v\n", value)
 	}
-}
 
-func TestStack_Peek(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(100)
-	got, err := stack.Peek()
-	if err != nil {
-		return
+	size := s.Size()
+	if size != 3 {
+		t.Errorf("Expected size to be 3, got %v\n", size)
 	}
-	if got != 100 {
-		t.Errorf("got = %v, want = %v", got, 100)
-	}
-}
 
-func TestStack_Pop(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(100)
-	got, err := stack.Pop()
-	if err != nil {
-		return
+	value, err = s.Pop()
+	if err != nil || value != 3 {
+		t.Errorf("Expected size to be 3, got %v\n", size)
 	}
-	if !got {
-		t.Errorf("got = %v, want = %v", got, false)
-	}
-}
 
-func TestStack_Push(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(100)
-	got, err := stack.Peek()
-	if err != nil {
-		return
+	size = s.Size()
+	if size != 2 {
+		t.Errorf("Expected size to be 3, got %v\n", size)
 	}
-	if got != 100 {
-		t.Errorf("got = %v, want = %v", got, 100)
-	}
-}
 
-func TestStack_Size(t *testing.T) {
-	stack := NewStack[int](5)
-	stack.Push(10)
-	stack.Push(20)
-	stack.Push(30)
-	stack.Push(100)
-	got := stack.Size()
-	if got != 4 {
-		t.Errorf("got = %v, want = %v", got, 4)
-	}
 }
