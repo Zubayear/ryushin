@@ -1,7 +1,7 @@
 # 📦 Go Data Structures Library
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/<your-username>/<repo-name>.svg)](https://pkg.go.dev/github.com/<your-username>/<repo-name>)
-[![Go Report Card](https://goreportcard.com/badge/github.com/<your-username>/<repo-name>)](https://goreportcard.com/report/github.com/<your-username>/<repo-name>)
+[![Go Reference](https://pkg.go.dev/badge/github.com/<your-username>/<repo-name>.svg)](https://pkg.go.dev/github.com/Zubayear/sonic)
+[![Go Report Card](https://goreportcard.com/badge/github.com/<your-username>/<repo-name>)](https://goreportcard.com/report/github.com/Zubayear/sonic)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A **robust, efficient, and extensible** data structures library written in **pure Go**.
@@ -42,4 +42,4 @@ This library is designed with:
 ## 📦 Installation
 
 ```bash
-go get github.com/<your-username>/<repo-name>
+go get github.com/Zubayear/sonic
