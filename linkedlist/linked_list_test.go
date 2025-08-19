@@ -42,6 +42,10 @@ func TestLinkedListOperations(t *testing.T) {
 	}
 
 	last, err := ll.PeekLast()
+	if err != nil {
+		t.Errorf("Expected %v, got %v\n", true, 1)
+	}
+
 	first, err := ll.PeekFirst()
 	if err != nil || last != first {
 		t.Fatalf("Expected %v, got %v\n", true, contains)

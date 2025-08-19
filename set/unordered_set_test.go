@@ -67,7 +67,7 @@ func TestUnorderedSet_Items(t *testing.T) {
 	}
 
 	// Check if all expected elements are present
-	expectedElements := []interface{}{"apple", "banana", "cherry"}
+	expectedElements := []any{"apple", "banana", "cherry"}
 	for _, element := range expectedElements {
 		found := false
 		for _, e := range elements {

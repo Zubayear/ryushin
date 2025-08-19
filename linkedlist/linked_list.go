@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-var i interface{} = -1
+var i any = -1
 
 type Iterator[T any] <-chan T
 
@@ -50,7 +50,7 @@ func (dl *doublyLinkedList[T]) Add(elem T) (bool, error) {
 
 // AddLast - add a node to the tail of the linked list, O(1)
 func (dl *doublyLinkedList[T]) AddLast(elem T) (bool, error) {
-	newNode := NewListNode[T](elem)
+	newNode := NewListNode(elem)
 	if dl.IsEmpty() {
 		dl.head = newNode
 		dl.tail = newNode
@@ -65,7 +65,7 @@ func (dl *doublyLinkedList[T]) AddLast(elem T) (bool, error) {
 
 // AddFirst - add an element to the beginning of the linked list, O(1)
 func (dl *doublyLinkedList[T]) AddFirst(elem T) (bool, error) {
-	newNode := NewListNode[T](elem)
+	newNode := NewListNode(elem)
 	if dl.IsEmpty() {
 		dl.head = newNode
 		dl.tail = newNode
@@ -83,7 +83,7 @@ func (dl *doublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 	if idx < 0 || idx > dl.size {
 		return false, errors.New("invalid index")
 	}
-	newNode := NewListNode[T](elem)
+	newNode := NewListNode(elem)
 
 	if dl.IsEmpty() {
 		dl.head = newNode

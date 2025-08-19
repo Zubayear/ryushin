@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var i interface{} = -1
+var i any = -1
 
 type Queue[T comparable] struct {
 	front, rear, cap, count int
