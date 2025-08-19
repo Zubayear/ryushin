@@ -6,7 +6,7 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-var i interface{} = -1
+var i any = -1
 
 type binaryHeap[T constraints.Ordered] struct {
 	data []T
