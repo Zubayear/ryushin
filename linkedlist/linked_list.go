@@ -1,8 +1,6 @@
 package linkedlist
 
-import (
-	"errors"
-)
+import "errors"
 
 var i any = -1
 
