@@ -1,6 +1,7 @@
 package queue_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/Zubayear/sonic/queue"
@@ -13,9 +14,9 @@ func TestQueueOperations(t *testing.T) {
 		t.Errorf("Expected %v, got %v\n", false, isEmpty)
 	}
 
-	_ = q.Enqueue(1)
-	_ = q.Enqueue(4)
-	_ = q.Enqueue(79)
+	q.Enqueue(1)
+	q.Enqueue(4)
+	q.Enqueue(79)
 
 	size := q.Size()
 	if size != 3 {
@@ -33,5 +34,9 @@ func TestQueueOperations(t *testing.T) {
 	isFull := q.IsFull()
 	if isFull {
 		t.Errorf("Expected %v, got %v\n", false, isFull)
+	}
+	result := q.Print()
+	if !reflect.DeepEqual(result, "[4, 79]") {
+		t.Errorf("Print() = %v; want %v", result, "[4, 79]")
 	}
 }
