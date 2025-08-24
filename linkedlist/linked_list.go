@@ -15,39 +15,39 @@ func NewListNode[T comparable](val T) *ListNode[T] {
 	return &ListNode[T]{val: val}
 }
 
-type doublyLinkedList[T comparable] struct {
+type DoublyLinkedList[T comparable] struct {
 	size       int
 	head, tail *ListNode[T]
 }
 
-func NewLinkedList[T comparable]() *doublyLinkedList[T] {
-	return &doublyLinkedList[T]{size: 0}
+func NewLinkedList[T comparable]() *DoublyLinkedList[T] {
+	return &DoublyLinkedList[T]{size: 0}
 }
 
 // Clear - empty this linked list
-func (dl *doublyLinkedList[T]) Clear() {
+func (dl *DoublyLinkedList[T]) Clear() {
 	dl.head = nil
 	dl.tail = nil
 	dl.size = 0
 }
 
 // Size - return the size of the linked list, O(1)
-func (dl *doublyLinkedList[T]) Size() int {
+func (dl *DoublyLinkedList[T]) Size() int {
 	return dl.size
 }
 
 // IsEmpty - return true if linked list is empty false otherwise, O(1)
-func (dl *doublyLinkedList[T]) IsEmpty() bool {
+func (dl *DoublyLinkedList[T]) IsEmpty() bool {
 	return dl.size == 0
 }
 
 // Add - add element to the tail of the linked list, O(1)
-func (dl *doublyLinkedList[T]) Add(elem T) (bool, error) {
+func (dl *DoublyLinkedList[T]) Add(elem T) (bool, error) {
 	return dl.AddLast(elem)
 }
 
 // AddLast - add a node to the tail of the linked list, O(1)
-func (dl *doublyLinkedList[T]) AddLast(elem T) (bool, error) {
+func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
 	newNode := NewListNode(elem)
 	if dl.IsEmpty() {
 		dl.head = newNode
@@ -62,7 +62,7 @@ func (dl *doublyLinkedList[T]) AddLast(elem T) (bool, error) {
 }
 
 // AddFirst - add an element to the beginning of the linked list, O(1)
-func (dl *doublyLinkedList[T]) AddFirst(elem T) (bool, error) {
+func (dl *DoublyLinkedList[T]) AddFirst(elem T) (bool, error) {
 	newNode := NewListNode(elem)
 	if dl.IsEmpty() {
 		dl.head = newNode
@@ -77,7 +77,7 @@ func (dl *doublyLinkedList[T]) AddFirst(elem T) (bool, error) {
 }
 
 // AddAt - add at specific index, O(n)
-func (dl *doublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
+func (dl *DoublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 	if idx < 0 || idx > dl.size {
 		return false, errors.New("invalid index")
 	}
@@ -110,7 +110,7 @@ func (dl *doublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 }
 
 // PeekFirst - check the value of the first node if it exists, O(1)
-func (dl *doublyLinkedList[T]) PeekFirst() (T, error) {
+func (dl *DoublyLinkedList[T]) PeekFirst() (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
@@ -118,7 +118,7 @@ func (dl *doublyLinkedList[T]) PeekFirst() (T, error) {
 }
 
 // PeekLast - check the value of the last node if it exists, O(1)
-func (dl *doublyLinkedList[T]) PeekLast() (T, error) {
+func (dl *DoublyLinkedList[T]) PeekLast() (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
@@ -126,7 +126,7 @@ func (dl *doublyLinkedList[T]) PeekLast() (T, error) {
 }
 
 // RemoveFirst - remove the first value at the head of the linked list, O(1)
-func (dl *doublyLinkedList[T]) RemoveFirst() (T, error) {
+func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
@@ -142,7 +142,7 @@ func (dl *doublyLinkedList[T]) RemoveFirst() (T, error) {
 }
 
 // RemoveLast - remove the last value at the tail of the linked list, O(1)
-func (dl *doublyLinkedList[T]) RemoveLast() (T, error) {
+func (dl *DoublyLinkedList[T]) RemoveLast() (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
@@ -158,7 +158,7 @@ func (dl *doublyLinkedList[T]) RemoveLast() (T, error) {
 }
 
 // Remove - remove a node with provided value, O(N)
-func (dl *doublyLinkedList[T]) Remove(elem T) (T, error) {
+func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
@@ -190,39 +190,36 @@ func (dl *doublyLinkedList[T]) Remove(elem T) (T, error) {
 }
 
 // RemoveAt - remove node at idx, O(N)
-func (dl *doublyLinkedList[T]) RemoveAt(idx int) (T, error) {
-	if idx < 0 || idx > dl.size {
+func (dl *DoublyLinkedList[T]) RemoveAt(idx int) (T, error) {
+	if idx < 0 || idx >= dl.size {
 		return i.(T), errors.New("invalid index")
 	}
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
-	iterNode := dl.head
-	k := 0
-	var result T
 	if idx == 0 {
 		return dl.RemoveFirst()
 	} else if idx == dl.size-1 {
 		return dl.RemoveLast()
 	}
-	for iterNode.next != nil {
+	iterNode := dl.head
+	for k := 0; iterNode != nil; k++ {
 		if k == idx-1 {
-			//1<->40->78
-			result = iterNode.next.val
-			nnNode := iterNode.next.next
-			iterNode.next = nnNode
-			nnNode.prev = iterNode
-			break
+			toRemove := iterNode.next
+			iterNode.next = toRemove.next
+			if toRemove.next != nil {
+				toRemove.next.prev = iterNode
+			}
+			dl.size--
+			return toRemove.val, nil
 		}
 		iterNode = iterNode.next
-		k++
 	}
-	dl.size--
-	return result, nil
+	return i.(T), errors.New("invalid index")
 }
 
 // find the index of the element in linked list, O(N)
-func (dl *doublyLinkedList[T]) indexOf(elem T) (int, error) {
+func (dl *DoublyLinkedList[T]) indexOf(elem T) (int, error) {
 	if dl.IsEmpty() {
 		return -1, errors.New("linked list empty")
 	}
@@ -240,7 +237,7 @@ func (dl *doublyLinkedList[T]) indexOf(elem T) (int, error) {
 }
 
 // Contains - check if an element exists in the list, O(N)
-func (dl *doublyLinkedList[T]) Contains(elem T) (bool, error) {
+func (dl *DoublyLinkedList[T]) Contains(elem T) (bool, error) {
 	result, err := dl.indexOf(elem)
 	if err != nil {
 		return false, err
@@ -248,7 +245,7 @@ func (dl *doublyLinkedList[T]) Contains(elem T) (bool, error) {
 	return result >= 0, nil
 }
 
-func (dl *doublyLinkedList[T]) Iterate() Iterator[T] {
+func (dl *DoublyLinkedList[T]) Iterate() Iterator[T] {
 	iterChan := make(chan T)
 	go func() {
 		defer close(iterChan)

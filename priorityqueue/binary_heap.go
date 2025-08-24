@@ -3,46 +3,47 @@ package priorityqueue
 import (
 	"errors"
 	"fmt"
+
 	"golang.org/x/exp/constraints"
 )
 
 var i any = -1
 
-type binaryHeap[T constraints.Ordered] struct {
+type BinaryHeap[T constraints.Ordered] struct {
 	data []T
 }
 
-func NewBinaryHeap[T constraints.Ordered]() *binaryHeap[T] {
-	return &binaryHeap[T]{data: make([]T, 0)}
+func NewBinaryHeap[T constraints.Ordered]() *BinaryHeap[T] {
+	return &BinaryHeap[T]{data: make([]T, 0)}
 }
 
-func (bh *binaryHeap[T]) IsEmpty() bool {
+func (bh *BinaryHeap[T]) IsEmpty() bool {
 	return bh.Size() == 0
 }
 
-func (bh *binaryHeap[T]) Clear() {
+func (bh *BinaryHeap[T]) Clear() {
 	bh.data = nil
 }
 
-func (bh *binaryHeap[T]) Size() int {
+func (bh *BinaryHeap[T]) Size() int {
 	return len(bh.data)
 }
 
-func (bh *binaryHeap[T]) Peek() (T, error) {
+func (bh *BinaryHeap[T]) Peek() (T, error) {
 	if bh.IsEmpty() {
 		return i.(T), errors.New("heap empty")
 	}
 	return bh.data[0], nil
 }
 
-func (bh *binaryHeap[T]) Poll() (T, error) {
+func (bh *BinaryHeap[T]) Poll() (T, error) {
 	if bh.IsEmpty() {
 		return i.(T), errors.New("heap empty")
 	}
 	return bh.removeAt(0)
 }
 
-func (bh *binaryHeap[T]) removeAt(k int) (T, error) {
+func (bh *BinaryHeap[T]) removeAt(k int) (T, error) {
 	if bh.IsEmpty() {
 		return i.(T), errors.New("heap empty")
 	}
@@ -72,19 +73,19 @@ func (bh *binaryHeap[T]) removeAt(k int) (T, error) {
 	return first, nil
 }
 
-func (bh *binaryHeap[T]) Add(val T) {
+func (bh *BinaryHeap[T]) Add(val T) {
 	bh.data = append(bh.data, val)
 	idxOfLastElem := bh.Size() - 1
 	bh.swim(idxOfLastElem)
 }
 
-func (bh *binaryHeap[T]) swap(i, j int) {
+func (bh *BinaryHeap[T]) swap(i, j int) {
 	temp := bh.data[i]
 	bh.data[i] = bh.data[j]
 	bh.data[j] = temp
 }
 
-func (bh *binaryHeap[T]) swim(k int) {
+func (bh *BinaryHeap[T]) swim(k int) {
 	parent := (k - 1) / 2
 	// compare with parent if it's less then swap
 	for k > 0 && bh.data[parent] > bh.data[k] {
@@ -101,6 +102,6 @@ func (bh *binaryHeap[T]) swim(k int) {
 //	bh.data = newData
 //}
 
-func (bh *binaryHeap[T]) Print() {
+func (bh *BinaryHeap[T]) Print() {
 	fmt.Println(bh.data)
 }

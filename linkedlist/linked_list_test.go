@@ -2,8 +2,9 @@ package linkedlist_test
 
 import (
 	"fmt"
-	"github.com/Zubayear/sonic/linkedlist"
 	"testing"
+
+	"github.com/Zubayear/sonic/linkedlist"
 )
 
 func TestLinkedListOperations(t *testing.T) {
@@ -78,5 +79,54 @@ func TestLinkedListOperations(t *testing.T) {
 	iter := ll.Iterate()
 	for elem := range iter {
 		fmt.Println(elem)
+	}
+}
+
+func TestRemoveAt(t *testing.T) {
+	ll := linkedlist.NewLinkedList[int]()
+	_, _ = ll.AddLast(10)
+	_, _ = ll.AddLast(20)
+	_, _ = ll.AddLast(30)
+	_, _ = ll.AddLast(40)
+	_, _ = ll.AddLast(50)
+
+	val, err := ll.RemoveAt(0)
+	if err != nil || val != 10 {
+		t.Errorf("expected 10, got %v, err: %v", val, err)
+	}
+
+	val, err = ll.RemoveAt(ll.Size() - 1)
+	if err != nil || val != 50 {
+		t.Errorf("expected 50, got %v, err: %v", val, err)
+	}
+
+	val, err = ll.RemoveAt(1)
+	if err != nil || val != 30 {
+		t.Errorf("expected 30, got %v, err: %v", val, err)
+	}
+
+	_, err = ll.RemoveAt(10)
+	if err == nil {
+		t.Errorf("expected error for invalid index")
+	}
+
+	val, err = ll.RemoveAt(0)
+	if err != nil || val != 20 {
+		t.Errorf("expected 20, got %v, err: %v", val, err)
+	}
+
+	val, err = ll.RemoveAt(1)
+	if err.Error() != "invalid index" {
+		t.Errorf("Expected %v, got %v", "invalid index", err)
+	}
+
+	val, err = ll.RemoveAt(0)
+	if err != nil || val != 40 {
+		t.Errorf("expected 20, got %v, err: %v", val, err)
+	}
+
+	_, err = ll.RemoveAt(0)
+	if err == nil {
+		t.Errorf("expected error when removing from empty list")
 	}
 }
