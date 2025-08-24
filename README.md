@@ -20,8 +20,7 @@ This library is designed with:
   - `Stack`
   - `Queue`
   - `Deque`
-  - `LinkedList` (singly & doubly linked)
-  - `HashMap` (chained & open addressing)
+  - `LinkedList`
   - `Set` (hash-based & tree-based)
 - Tree structures:
   - `Binary Search Tree`
