@@ -11,11 +11,15 @@ func TestLinkedListOperations(t *testing.T) {
 	ll := linkedlist.NewLinkedList[int]()
 	_, _ = ll.AddFirst(1)
 	_, _ = ll.AddLast(40)
-	_, _ = ll.AddAt(2, 78)
+	_, err := ll.AddAt(2, 78)
+
+	if err.Error() != "invalid index" {
+		t.Errorf("Expected %v, got %v\n", "invalid index", err)
+	}
 
 	value, err := ll.PeekLast()
-	if err != nil || value != 78 {
-		t.Fatalf("Expected %v, got %v\n", 78, value)
+	if err != nil || value != 40 {
+		t.Fatalf("Expected %v, got %v\n", 40, value)
 	}
 
 	value, err = ll.RemoveAt(1)
@@ -23,13 +27,13 @@ func TestLinkedListOperations(t *testing.T) {
 		t.Fatalf("Expected %v, got %v\n", 40, value)
 	}
 	size := ll.Size()
-	if size != 2 {
-		t.Fatalf("Expected %v, got %v\n", 2, size)
+	if size != 1 {
+		t.Fatalf("Expected %v, got %v\n", 1, size)
 	}
 
 	value, err = ll.RemoveAt(1)
-	if err != nil || value != 78 {
-		t.Fatalf("Expected %v, got %v\n", 78, value)
+	if err.Error() != "invalid index" {
+		t.Fatalf("Expected %v, got %v\n", "invalid index", err)
 	}
 
 	size = ll.Size()

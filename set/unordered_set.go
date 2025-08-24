@@ -2,32 +2,36 @@ package set
 
 import "sync"
 
-// UnorderedSet is a generic unordered set implementation with thread safety.
+// UnorderedSet represents a generic unordered set data structure.
+// It supports thread-safe operations and stores unique elements of any type.
 type UnorderedSet struct {
 	lockObj sync.RWMutex
 	items   map[any]struct{}
 }
 
-// NewUnorderedSet creates a new instance of the UnorderedSet.
+// NewUnorderedSet creates and returns a new instance of UnorderedSet.
 func NewUnorderedSet() *UnorderedSet {
 	return &UnorderedSet{items: make(map[any]struct{})}
 }
 
-// Insert an item to the set
+// Insert adds an item to the set.
+// If the item already exists, the set remains unchanged.
 func (us *UnorderedSet) Insert(item any) {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	us.items[item] = struct{}{}
 }
 
-// Remove removes an item from set
+// Remove deletes an item from the set.
+// If the item does not exist, the set remains unchanged.
 func (us *UnorderedSet) Remove(item any) {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	delete(us.items, item)
 }
 
-// Contain checks if an item is present in set
+// Contain checks whether the specified item exists in the set.
+// Returns true if the item is present, false otherwise.
 func (us *UnorderedSet) Contain(item any) bool {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
@@ -35,21 +39,22 @@ func (us *UnorderedSet) Contain(item any) bool {
 	return ok
 }
 
-// Size return the size of the set
+// Size returns the number of elements currently in the set.
 func (us *UnorderedSet) Size() int {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	return len(us.items)
 }
 
-// Clear removes all elements from the set.
+// Clear removes all elements from the set, resetting it to empty.
 func (us *UnorderedSet) Clear() {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	us.items = make(map[any]struct{})
 }
 
-// Items returns a slice containing all elements in the set.
+// Items returns a slice containing all elements currently in the set.
+// The order of elements is not guaranteed.
 func (us *UnorderedSet) Items() []any {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()

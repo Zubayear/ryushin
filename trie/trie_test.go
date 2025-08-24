@@ -2,6 +2,7 @@ package trie
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -64,6 +65,10 @@ func TestTrieGetWordsWithPrefix(t *testing.T) {
 	prefix := "he"
 	expected := []string{"he", "hello", "helium", "hero"}
 	got := tr.GetWordsWithPrefix(prefix)
+
+	sort.Strings(expected)
+	sort.Strings(got)
+
 	if !reflect.DeepEqual(got, expected) {
 		t.Errorf("GetWordsWithPrefix(%q) = %v; want %v", prefix, got, expected)
 	}

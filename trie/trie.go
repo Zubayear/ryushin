@@ -167,7 +167,6 @@ func (t *Trie) Remove(word string) bool {
 		ch := val.ch
 		child := parent.children[ch]
 		if len(child.children) == 0 && !child.isEnd {
-			// remove that
 			delete(parent.children, ch)
 		} else {
 			break

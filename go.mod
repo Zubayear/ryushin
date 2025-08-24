@@ -1,5 +1,5 @@
 module github.com/Zubayear/sonic
 
-go 1.20
+go 1.24.0
 
-require golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
+require golang.org/x/exp v0.0.0-20250819193227-8b4c13bb791b
