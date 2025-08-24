@@ -1,8 +1,9 @@
 package stack_test
 
 import (
-	"github.com/Zubayear/sonic/stack"
 	"testing"
+
+	"github.com/Zubayear/sonic/stack"
 )
 
 func TestAllOperation(t *testing.T) {
