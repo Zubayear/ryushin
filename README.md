@@ -21,7 +21,7 @@ This library is designed with:
   - `Queue`
   - `Deque`
   - `LinkedList`
-  - `Set` (hash-based & tree-based)
+  - `Set`
 - Tree structures:
   - `Binary Search Tree`
   - `AVL Tree`
