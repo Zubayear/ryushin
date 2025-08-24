@@ -1,8 +1,9 @@
 package priorityqueue_test
 
 import (
-	"github.com/Zubayear/sonic/priorityqueue"
 	"testing"
+
+	"github.com/Zubayear/sonic/priorityqueue"
 )
 
 func TestBinaryHeapOperations(t *testing.T) {
@@ -24,7 +25,4 @@ func TestBinaryHeapOperations(t *testing.T) {
 	if size != 7 {
 		t.Fatalf("Extected %v, got %v\n", 7, size)
 	}
-
-	bh.Print()
-	// 5 10 15 20 40 35 30
 }

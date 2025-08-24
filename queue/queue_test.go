@@ -1,8 +1,9 @@
 package queue_test
 
 import (
-	"github.com/Zubayear/sonic/queue"
 	"testing"
+
+	"github.com/Zubayear/sonic/queue"
 )
 
 func TestQueueOperations(t *testing.T) {
@@ -33,5 +34,4 @@ func TestQueueOperations(t *testing.T) {
 	if isFull {
 		t.Errorf("Expected %v, got %v\n", false, isFull)
 	}
-	q.Print()
 }
