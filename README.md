@@ -41,5 +41,14 @@ This library is designed with:
 
 ## 📦 Installation
 
-```bash
+```
 go get github.com/Zubayear/sonic
+```
+
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Whether it’s fixing bugs, adding new data structures, improving documentation, or writing tests, your help is appreciated.
+
