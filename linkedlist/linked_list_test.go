@@ -14,7 +14,7 @@ func TestLinkedListOperations(t *testing.T) {
 	_, _ = ll.AddLast(40)
 	_, err := ll.AddAt(2, 78)
 
-	if !errors.Is(err, errors.New("invalid index")) {
+	if errors.Is(err, errors.New("invalid index")) {
 		t.Errorf("Expected %v, got %v\n", "invalid index", err)
 	}
 
