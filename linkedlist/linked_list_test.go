@@ -2,7 +2,6 @@ package linkedlist_test
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/Zubayear/sonic/linkedlist"
@@ -101,10 +100,6 @@ func TestLinkedListOperations(t *testing.T) {
 	added, _ = ll.AddFirst(70)
 	if !added {
 		t.Errorf("Expected %v, got %v\n", true, added)
-	}
-	iter := ll.Iterate()
-	for elem := range iter {
-		fmt.Println(elem)
 	}
 }
 
