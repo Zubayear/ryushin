@@ -119,7 +119,7 @@ func TestRemoveAt(t *testing.T) {
 		t.Errorf("expected 20, got %v, err: %v", val, err)
 	}
 
-	val, err = ll.RemoveAt(1)
+	_, err = ll.RemoveAt(1)
 	if err.Error() != "invalid index" {
 		t.Errorf("Expected %v, got %v", "invalid index", err)
 	}
