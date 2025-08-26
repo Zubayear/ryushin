@@ -23,7 +23,7 @@ func TestAllOperation(t *testing.T) {
 		t.Errorf("Expected %v, got %v\n", 3, v)
 	}
 
-	v, err := s.ValueAt(100)
+	_, err := s.ValueAt(100)
 	if errors.Is(err, errors.New("invalid position")) {
 		t.Errorf("Expected %v, got %v\n", errors.New("invalid position"), err)
 	}
