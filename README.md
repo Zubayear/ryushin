@@ -3,6 +3,8 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/Zubayear/sonic.svg)](https://pkg.go.dev/github.com/Zubayear/sonic)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zubayear/sonic)](https://goreportcard.com/report/github.com/Zubayear/sonic)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build Status](https://github.com/Zubayear/sonic/actions/workflows/go.yml/badge.svg)](https://github.com/Zubayear/sonic/actions)
+[![codecov](https://codecov.io/gh/Zubayear/sonic/branch/main/graph/badge.svg)](https://codecov.io/gh/Zubayear/sonic)
 
 A **robust, efficient, and extensible** data structures library written in **pure Go**.
 
