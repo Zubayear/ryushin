@@ -1,6 +1,7 @@
 package linkedlist_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -13,7 +14,7 @@ func TestLinkedListOperations(t *testing.T) {
 	_, _ = ll.AddLast(40)
 	_, err := ll.AddAt(2, 78)
 
-	if err.Error() != "invalid index" {
+	if !errors.Is(err, errors.New("invalid index")) {
 		t.Errorf("Expected %v, got %v\n", "invalid index", err)
 	}
 
@@ -31,7 +32,7 @@ func TestLinkedListOperations(t *testing.T) {
 		t.Fatalf("Expected %v, got %v\n", 1, size)
 	}
 
-	value, err = ll.RemoveAt(1)
+	_, err = ll.RemoveAt(1)
 	if err.Error() != "invalid index" {
 		t.Fatalf("Expected %v, got %v\n", "invalid index", err)
 	}
