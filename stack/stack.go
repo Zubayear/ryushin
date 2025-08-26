@@ -10,15 +10,15 @@ var i any = -1
 // Stack represents a generic stack data structure with dynamic resizing.
 // It uses a slice as underlying storage and a RWMutex for optional concurrency safety.
 type Stack[T comparable] struct {
-	size, top int
-	data      []T
-	lock      sync.RWMutex
+	cap, top int
+	data     []T
+	lock     sync.RWMutex
 }
 
 // NewStack initializes a new stack with default capacity of 16.
 func NewStack[T comparable]() *Stack[T] {
 	return &Stack[T]{
-		size: 16,
+		cap:  16,
 		top:  -1,
 		data: make([]T, 16),
 		lock: sync.RWMutex{},
@@ -31,8 +31,8 @@ func NewStack[T comparable]() *Stack[T] {
 func (s *Stack[T]) increaseSize() {
 	s.lock.Lock()
 	defer s.lock.Unlock()
-	s.size = s.size * 2
-	newData := make([]T, s.size)
+	s.cap = s.cap * 2
+	newData := make([]T, s.cap)
 	copy(newData, s.data)
 	s.data = newData
 }
@@ -89,18 +89,21 @@ func (s *Stack[T]) IsEmpty() bool {
 // IsFull checks if the stack has reached its current capacity.
 // Returns true if full, false otherwise.
 func (s *Stack[T]) IsFull() bool {
-	return s.top == s.size-1
+	return s.top == s.cap-1
 }
 
 // ValueAt returns the value at a specific position from the top of the stack (0-based).
 // pos = 0 returns the top element, pos = 1 returns one below top, etc.
 // Returns an error if the stack is empty or the position is out of bounds.
 func (s *Stack[T]) ValueAt(pos int) (T, error) {
+	if pos < 0 || pos >= s.Size() {
+		return i.(T), errors.New("invalid position")
+	}
 	if s.IsEmpty() {
 		return i.(T), errors.New("stack empty")
 	}
-	if s.top-pos+1 < 0 {
+	if s.top-pos < 0 {
 		return i.(T), errors.New("stack empty")
 	}
-	return s.data[s.top-pos+1], nil
+	return s.data[s.top-pos], nil
 }

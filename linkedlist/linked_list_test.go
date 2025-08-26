@@ -81,6 +81,27 @@ func TestLinkedListOperations(t *testing.T) {
 		t.Fatalf("Expected %v, got %v\n", 0, size)
 	}
 
+	_, _ = ll.AddFirst(90)
+	_, _ = ll.Add(10)
+	_, _ = ll.Add(20)
+	added, _ := ll.AddAt(1, 99)
+	if !added {
+		t.Errorf("Expected %v, got %v\n", true, added)
+	}
+	removed, _ := ll.Remove(10)
+	if removed != 10 {
+		t.Errorf("Expected %v, got %v\n", 10, removed)
+	}
+
+	removeHead, _ := ll.Remove(90)
+	if removeHead != 90 {
+		t.Errorf("Expected %v, got %v\n", 90, removeHead)
+	}
+
+	added, _ = ll.AddFirst(70)
+	if !added {
+		t.Errorf("Expected %v, got %v\n", true, added)
+	}
 	iter := ll.Iterate()
 	for elem := range iter {
 		fmt.Println(elem)

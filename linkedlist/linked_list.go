@@ -174,24 +174,19 @@ func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
 		return dl.RemoveLast()
 	}
 	iterNode := dl.head
-	var returnValue T
-	c := 0
-	for iterNode.next != nil {
+	for iterNode != nil && iterNode.next != nil {
 		if iterNode.next.val == elem {
-			returnValue = iterNode.next.val
-			iterNode.next = iterNode.next.next
-			iterNode.next.next.prev = iterNode
-			iterNode.next = nil
-			c++
+			toDelete := iterNode.next
+			iterNode.next = toDelete.next
+			if toDelete.next != nil {
+				toDelete.next.prev = iterNode
+			}
+			dl.size--
+			return toDelete.val, nil
 		}
 		iterNode = iterNode.next
 	}
-	if c > 0 {
-		dl.size--
-		return returnValue, nil
-	} else {
-		return i.(T), errors.New("element not found in linked list")
-	}
+	return i.(T), errors.New("element not found in linked list")
 }
 
 // RemoveAt removes and returns the element at a specific index. O(n)
