@@ -184,9 +184,8 @@ func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
 	if dl.IsEmpty() {
 		return i.(T), errors.New("linked list empty")
 	}
-	traveler := dl.head
 
-	for traveler = dl.head; traveler != nil; traveler = traveler.next {
+	for traveler := dl.head; traveler != nil; traveler = traveler.next {
 		if traveler.val == elem {
 			return dl.removeNode(traveler)
 		}

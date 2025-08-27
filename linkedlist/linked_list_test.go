@@ -15,8 +15,8 @@ func TestAddAndSize(t *testing.T) {
 	if !ok {
 		t.Errorf("Expected Add to return true")
 	}
-	ok, _ = list.Add(20)
-	ok, _ = list.Add(30)
+	_, _ = list.Add(20)
+	_, _ = list.Add(30)
 
 	if list.Size() != 3 {
 		t.Errorf("Expected size 3, got %d", list.Size())
