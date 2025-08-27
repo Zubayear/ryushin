@@ -57,10 +57,6 @@ func (bh *BinaryHeap[T]) Poll() (T, error) {
 // removeAt removes and returns the element at index k, then re-heapifies the tree.
 // Internal method used by Poll. Returns an error if the heap is empty.
 func (bh *BinaryHeap[T]) removeAt(k int) (T, error) {
-	if bh.IsEmpty() {
-		return i.(T), errors.New("heap empty")
-	}
-
 	first := bh.data[k]
 	last := bh.data[bh.Size()-1]
 	bh.data[0] = last

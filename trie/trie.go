@@ -147,10 +147,7 @@ func (t *Trie) Remove(word string) bool {
 		if next == nil {
 			return false
 		}
-		_, err := s.Push(Pair{current, ch})
-		if err != nil {
-			return false
-		}
+		_, _ = s.Push(Pair{current, ch})
 		current = next
 	}
 	if !current.isEnd {
@@ -159,10 +156,7 @@ func (t *Trie) Remove(word string) bool {
 	current.isEnd = false
 
 	for !s.IsEmpty() {
-		val, err := s.Pop()
-		if err != nil {
-			return false
-		}
+		val, _ := s.Pop()
 		parent := val.node
 		ch := val.ch
 		child := parent.children[ch]

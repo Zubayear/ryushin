@@ -102,9 +102,6 @@ func (s *Stack[T]) ValueAt(pos int) (T, error) {
 	if pos < 0 || pos >= s.Size() {
 		return i.(T), errors.New("invalid position")
 	}
-	if s.top-pos < 0 {
-		return i.(T), errors.New("stack empty")
-	}
 	return s.data[s.top-pos], nil
 }
 
