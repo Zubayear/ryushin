@@ -101,3 +101,10 @@ func (q *Queue[T]) Print() string {
 	result.WriteString("]")
 	return result.String()
 }
+
+func (q *Queue[T]) Clear() {
+	q.front = 0
+	q.rear = 0
+	q.count = 0
+	q.cap = 16
+}

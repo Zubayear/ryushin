@@ -39,4 +39,23 @@ func TestQueueOperations(t *testing.T) {
 	if !reflect.DeepEqual(result, "[4, 79]") {
 		t.Errorf("Print() = %v; want %v", result, "[4, 79]")
 	}
+
+	q.Clear()
+	if q.Size() != 0 {
+		t.Errorf("Expected %v, got %v\n", 0, q.Size())
+	}
+
+	v, _ := q.Peek()
+	if v != -1 {
+		t.Errorf("Expected %v, got %v\n", -1, v)
+	}
+
+	v, _ = q.Dequeue()
+	if v != -1 {
+		t.Errorf("Expected %v, got %v\n", -1, v)
+	}
+
+	for i := 0; i < 50; i++ {
+		q.Enqueue(i)
+	}
 }
