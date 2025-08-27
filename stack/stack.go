@@ -96,14 +96,19 @@ func (s *Stack[T]) IsFull() bool {
 // pos = 0 returns the top element, pos = 1 returns one below top, etc.
 // Returns an error if the stack is empty or the position is out of bounds.
 func (s *Stack[T]) ValueAt(pos int) (T, error) {
-	if pos < 0 || pos >= s.Size() {
-		return i.(T), errors.New("invalid position")
-	}
 	if s.IsEmpty() {
 		return i.(T), errors.New("stack empty")
+	}
+	if pos < 0 || pos >= s.Size() {
+		return i.(T), errors.New("invalid position")
 	}
 	if s.top-pos < 0 {
 		return i.(T), errors.New("stack empty")
 	}
 	return s.data[s.top-pos], nil
+}
+
+func (s *Stack[T]) Clear() {
+	s.top = -1
+	s.data = nil
 }

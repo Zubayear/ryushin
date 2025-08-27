@@ -87,7 +87,6 @@ func TestTrieRemove(t *testing.T) {
 	tr.Insert("helium")
 	tr.Insert("hero")
 
-	// Remove existing word
 	if !tr.Remove("he") {
 		t.Errorf("Remove('he') = false; want true")
 	}
@@ -95,7 +94,6 @@ func TestTrieRemove(t *testing.T) {
 		t.Errorf("'he' should be removed")
 	}
 
-	// Remove prefix word
 	if !tr.Remove("hello") {
 		t.Errorf("Remove('hello') = false; want true")
 	}
