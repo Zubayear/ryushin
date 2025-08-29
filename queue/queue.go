@@ -4,15 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"sync"
 )
-
-var i any = -1
 
 // Queue represents a generic queue using a circular array.
 // Supports dynamic resizing when the queue is full.
 type Queue[T comparable] struct {
 	front, rear, cap, count int
 	data                    []T
+	mutex                   sync.RWMutex
 }
 
 // NewQueue creates and returns a new queue with an initial capacity of 16.
@@ -35,7 +35,9 @@ func (q *Queue[T]) increaseSize() {
 // Time Complexity: O(1) amortized
 // Space Complexity: O(1) (O(n) when resizing)
 func (q *Queue[T]) Enqueue(val T) {
-	if q.IsFull() {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+	if q.count == q.cap {
 		q.increaseSize()
 	}
 	q.data[q.rear%q.cap] = val
@@ -47,11 +49,14 @@ func (q *Queue[T]) Enqueue(val T) {
 // Returns an error if the queue is empty.
 // Time Complexity: O(1)
 func (q *Queue[T]) Dequeue() (T, error) {
-	if q.IsEmpty() {
-		return i.(T), errors.New("queue empty")
+	var zero T
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
+	if q.count == 0 {
+		return zero, errors.New("queue empty")
 	}
 	value := q.data[q.front%q.cap]
-	q.data[q.front%q.cap] = i.(T)
+	q.data[q.front%q.cap] = zero
 	q.front++
 	q.count--
 	return value, nil
@@ -61,8 +66,11 @@ func (q *Queue[T]) Dequeue() (T, error) {
 // Returns an error if the queue is empty.
 // Time Complexity: O(1)
 func (q *Queue[T]) Peek() (T, error) {
-	if q.IsEmpty() {
-		return i.(T), errors.New("queue empty")
+	var zero T
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+	if q.count == 0 {
+		return zero, errors.New("queue empty")
 	}
 	return q.data[q.front%q.cap], nil
 }
@@ -70,12 +78,16 @@ func (q *Queue[T]) Peek() (T, error) {
 // IsFull checks if the queue has reached its capacity.
 // Time Complexity: O(1)
 func (q *Queue[T]) IsFull() bool {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
 	return q.count == q.cap
 }
 
 // IsEmpty checks if the queue has no elements.
 // Time Complexity: O(1)
 func (q *Queue[T]) IsEmpty() bool {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
 	return q.count == 0
 }
 
@@ -88,6 +100,8 @@ func (q *Queue[T]) Size() int {
 // Print returns a string representation of the queue elements in order.
 // Time Complexity: O(n)
 func (q *Queue[T]) Print() string {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
 	var result strings.Builder
 	result.WriteString("[")
 	for r := q.front; r <= q.rear-1; r++ {
@@ -103,6 +117,8 @@ func (q *Queue[T]) Print() string {
 }
 
 func (q *Queue[T]) Clear() {
+	q.mutex.Lock()
+	defer q.mutex.Unlock()
 	q.front = 0
 	q.rear = 0
 	q.count = 0

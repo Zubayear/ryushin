@@ -5,8 +5,6 @@ import (
 	"sync"
 )
 
-var i any = -1
-
 // Stack represents a generic stack data structure with dynamic resizing.
 // It uses a slice as underlying storage and a RWMutex for optional concurrency safety.
 type Stack[T comparable] struct {
@@ -29,8 +27,6 @@ func NewStack[T comparable]() *Stack[T] {
 // It copies all existing elements to the new slice.
 // This method is protected by a lock for thread-safety.
 func (s *Stack[T]) increaseSize() {
-	s.lock.Lock()
-	defer s.lock.Unlock()
 	s.cap = s.cap * 2
 	newData := make([]T, s.cap)
 	copy(newData, s.data)
@@ -41,11 +37,11 @@ func (s *Stack[T]) increaseSize() {
 // Automatically increases size if the stack is full.
 // Returns true on success and an error if any.
 func (s *Stack[T]) Push(val T) (bool, error) {
-	if s.IsFull() {
-		s.increaseSize()
-	}
 	s.lock.Lock()
 	defer s.lock.Unlock()
+	if s.top == s.cap-1 {
+		s.increaseSize()
+	}
 	s.top++
 	s.data[s.top] = val
 	return true, nil
@@ -54,11 +50,14 @@ func (s *Stack[T]) Push(val T) (bool, error) {
 // Pop removes and returns the top element from the stack.
 // Returns an error if the stack is empty.
 func (s *Stack[T]) Pop() (T, error) {
-	if s.IsEmpty() {
-		return i.(T), errors.New("stack empty")
-	}
+	var zero T
 	s.lock.Lock()
 	defer s.lock.Unlock()
+
+	if s.top == -1 {
+		return zero, errors.New("stack empty")
+	}
+
 	value := s.data[s.top]
 	s.top--
 	return value, nil
@@ -67,8 +66,9 @@ func (s *Stack[T]) Pop() (T, error) {
 // Peek returns the value at the top of the stack without removing it.
 // Returns an error if the stack is empty.
 func (s *Stack[T]) Peek() (T, error) {
+	var zero T
 	if s.IsEmpty() {
-		return i.(T), errors.New("stack empty")
+		return zero, errors.New("stack empty")
 	}
 	return s.data[s.top], nil
 }
@@ -83,12 +83,16 @@ func (s *Stack[T]) Size() int {
 // IsEmpty checks if the stack has no elements.
 // Returns true if empty, false otherwise.
 func (s *Stack[T]) IsEmpty() bool {
+	s.lock.RLock()
+	defer s.lock.RUnlock()
 	return s.top == -1
 }
 
 // IsFull checks if the stack has reached its current capacity.
 // Returns true if full, false otherwise.
 func (s *Stack[T]) IsFull() bool {
+	s.lock.RLock()
+	defer s.lock.RUnlock()
 	return s.top == s.cap-1
 }
 
@@ -96,16 +100,21 @@ func (s *Stack[T]) IsFull() bool {
 // pos = 0 returns the top element, pos = 1 returns one below top, etc.
 // Returns an error if the stack is empty or the position is out of bounds.
 func (s *Stack[T]) ValueAt(pos int) (T, error) {
-	if s.IsEmpty() {
-		return i.(T), errors.New("stack empty")
+	s.lock.RLock()
+	defer s.lock.RUnlock()
+	var zero T
+	if s.top == -1 {
+		return zero, errors.New("stack empty")
 	}
-	if pos < 0 || pos >= s.Size() {
-		return i.(T), errors.New("invalid position")
+	if pos < 0 || pos >= s.top+1 {
+		return zero, errors.New("invalid position")
 	}
 	return s.data[s.top-pos], nil
 }
 
 func (s *Stack[T]) Clear() {
+	s.lock.Lock()
+	defer s.lock.Unlock()
 	s.top = -1
 	s.data = nil
 }

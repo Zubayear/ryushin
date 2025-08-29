@@ -46,13 +46,13 @@ func TestQueueOperations(t *testing.T) {
 	}
 
 	v, _ := q.Peek()
-	if v != -1 {
-		t.Errorf("Expected %v, got %v\n", -1, v)
+	if v != 0 {
+		t.Errorf("Expected %v, got %v\n", 0, v)
 	}
 
 	v, _ = q.Dequeue()
-	if v != -1 {
-		t.Errorf("Expected %v, got %v\n", -1, v)
+	if v != 0 {
+		t.Errorf("Expected %v, got %v\n", 0, v)
 	}
 
 	for i := 0; i < 50; i++ {

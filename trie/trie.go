@@ -1,6 +1,10 @@
 package trie
 
-import "github.com/Zubayear/sonic/stack"
+import (
+	"sync"
+
+	"github.com/Zubayear/sonic/stack"
+)
 
 // Node represents a single node in the Trie.
 // Each node contains a map of children and a boolean flag indicating
@@ -18,24 +22,29 @@ func NewTrieNode() *Node {
 // Trie represents the Trie data structure.
 // It contains a root node and a size that tracks the number of words.
 type Trie struct {
-	root *Node
-	size int
+	root  *Node
+	size  int
+	mutex sync.RWMutex
 }
 
 // NewTrie creates and returns an empty Trie.
 func NewTrie() *Trie {
-	return &Trie{NewTrieNode(), 0}
+	return &Trie{NewTrieNode(), 0, sync.RWMutex{}}
 }
 
 // Size returns the total number of words stored in the Trie.
 // Time Complexity: O(1)
 func (t *Trie) Size() int {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
 	return t.size
 }
 
 // IsEmpty checks if the Trie contains any words.
 // Time Complexity: O(1)
 func (t *Trie) IsEmpty() bool {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
 	return t.size == 0
 }
 
@@ -44,6 +53,8 @@ func (t *Trie) IsEmpty() bool {
 // Time Complexity: O(N), where N = length of the word
 // Space Complexity: O(N), for new nodes if none exist along the path
 func (t *Trie) Insert(word string) {
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
 	current := t.root
 	for _, ch := range word {
 		if current.children[ch] == nil {
@@ -61,6 +72,8 @@ func (t *Trie) Insert(word string) {
 // Returns true if the word is found and is a complete word.
 // Time Complexity: O(N), where N = length of the word
 func (t *Trie) Search(word string) bool {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
 	current := t.root
 	for _, ch := range word {
 		if current.children[ch] == nil {
@@ -75,6 +88,8 @@ func (t *Trie) Search(word string) bool {
 // Returns true if such a prefix exists, even if it is not a complete word.
 // Time Complexity: O(K), where K = length of the prefix
 func (t *Trie) StartsWith(prefix string) bool {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
 	current := t.root
 	for _, ch := range prefix {
 		if current.children[ch] == nil {
@@ -121,6 +136,8 @@ func (t *Trie) findNodeForPrefix(prefix string) *Node {
 // Returns an empty slice if the prefix does not exist.
 // Time Complexity: O(K + M * L), where K = length of prefix, M = number of matching words
 func (t *Trie) GetWordsWithPrefix(prefix string) []string {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
 	var result []string
 	current := t.findNodeForPrefix(prefix)
 	if current == nil {
@@ -135,6 +152,8 @@ func (t *Trie) GetWordsWithPrefix(prefix string) []string {
 // Time Complexity: O(N), where N = length of the word
 // Space Complexity: O(N) for the stack to track nodes
 func (t *Trie) Remove(word string) bool {
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
 	current := t.root
 	type Pair struct {
 		node *Node

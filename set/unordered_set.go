@@ -33,16 +33,16 @@ func (us *UnorderedSet) Remove(item any) {
 // Contain checks whether the specified item exists in the set.
 // Returns true if the item is present, false otherwise.
 func (us *UnorderedSet) Contain(item any) bool {
-	us.lockObj.Lock()
-	defer us.lockObj.Unlock()
+	us.lockObj.RLock()
+	defer us.lockObj.RUnlock()
 	_, ok := us.items[item]
 	return ok
 }
 
 // Size returns the number of elements currently in the set.
 func (us *UnorderedSet) Size() int {
-	us.lockObj.Lock()
-	defer us.lockObj.Unlock()
+	us.lockObj.RLock()
+	defer us.lockObj.RUnlock()
 	return len(us.items)
 }
 

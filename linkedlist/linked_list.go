@@ -1,8 +1,9 @@
 package linkedlist
 
-import "errors"
-
-var i any = -1
+import (
+	"errors"
+	"sync"
+)
 
 // Iterator is a channel-based iterator for traversing the linked list.
 type Iterator[T any] <-chan T
@@ -26,6 +27,7 @@ func NewListNode[T comparable](val T, prev *ListNode[T], next *ListNode[T]) *Lis
 type DoublyLinkedList[T comparable] struct {
 	size       int
 	head, tail *ListNode[T]
+	mutex      sync.RWMutex
 }
 
 // NewLinkedList initializes and returns a new empty doubly linked list.
@@ -35,6 +37,8 @@ func NewLinkedList[T comparable]() *DoublyLinkedList[T] {
 
 // Clear removes all elements from the list, resetting it to empty.
 func (dl *DoublyLinkedList[T]) Clear() {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
 	iter := dl.head
 	for iter != nil {
 		next := iter.next
@@ -49,11 +53,15 @@ func (dl *DoublyLinkedList[T]) Clear() {
 
 // Size returns the number of elements in the list. O(1)
 func (dl *DoublyLinkedList[T]) Size() int {
+	dl.mutex.RLock()
+	defer dl.mutex.RUnlock()
 	return dl.size
 }
 
 // IsEmpty checks if the linked list is empty. O(1)
 func (dl *DoublyLinkedList[T]) IsEmpty() bool {
+	dl.mutex.RLock()
+	defer dl.mutex.RUnlock()
 	return dl.size == 0
 }
 
@@ -64,7 +72,9 @@ func (dl *DoublyLinkedList[T]) Add(elem T) (bool, error) {
 
 // AddLast appends a new element at the tail of the list. O(1)
 func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
-	if dl.IsEmpty() {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
+	if dl.size == 0 {
 		node := NewListNode(elem, nil, nil)
 		dl.head = node
 		dl.tail = node
@@ -79,7 +89,9 @@ func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
 
 // AddFirst inserts a new element at the head of the list. O(1)
 func (dl *DoublyLinkedList[T]) AddFirst(elem T) (bool, error) {
-	if dl.IsEmpty() {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
+	if dl.size == 0 {
 		node := NewListNode(elem, nil, nil)
 		dl.head = node
 		dl.tail = node
@@ -100,7 +112,7 @@ func (dl *DoublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 	if idx == 0 {
 		return dl.AddFirst(elem)
 	}
-	if idx == dl.Size() {
+	if idx == dl.size {
 		return dl.AddLast(elem)
 	}
 	temp := dl.head
@@ -117,29 +129,38 @@ func (dl *DoublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 
 // PeekFirst returns the value of the first element. O(1)
 func (dl *DoublyLinkedList[T]) PeekFirst() (T, error) {
-	if dl.IsEmpty() {
-		return i.(T), errors.New("linked list empty")
+	dl.mutex.RLock()
+	defer dl.mutex.RUnlock()
+	var zero T
+	if dl.size == 0 {
+		return zero, errors.New("linked list empty")
 	}
 	return dl.head.val, nil
 }
 
 // PeekLast returns the value of the last element. O(1)
 func (dl *DoublyLinkedList[T]) PeekLast() (T, error) {
-	if dl.IsEmpty() {
-		return i.(T), errors.New("linked list empty")
+	dl.mutex.RLock()
+	defer dl.mutex.RUnlock()
+	var zero T
+	if dl.size == 0 {
+		return zero, errors.New("linked list empty")
 	}
 	return dl.tail.val, nil
 }
 
 // RemoveFirst removes and returns the first element. O(1)
 func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
-	if dl.IsEmpty() {
-		return i.(T), errors.New("linked list empty")
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
+	var zero T
+	if dl.size == 0 {
+		return zero, errors.New("linked list empty")
 	}
 	value := dl.head.val
 	dl.head = dl.head.next
 	dl.size--
-	if dl.IsEmpty() {
+	if dl.size == 0 {
 		dl.tail = nil
 	} else {
 		dl.head.prev = nil
@@ -149,13 +170,16 @@ func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
 
 // RemoveLast removes and returns the last element. O(1)
 func (dl *DoublyLinkedList[T]) RemoveLast() (T, error) {
-	if dl.IsEmpty() {
-		return i.(T), errors.New("linked list empty")
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
+	var zero T
+	if dl.size == 0 {
+		return zero, errors.New("linked list empty")
 	}
 	value := dl.tail.val
 	dl.tail = dl.tail.prev
 	dl.size--
-	if dl.IsEmpty() {
+	if dl.size == 0 {
 		dl.head = nil
 	} else {
 		dl.tail.next = nil
@@ -181,8 +205,9 @@ func (dl *DoublyLinkedList[T]) removeNode(node *ListNode[T]) (T, error) {
 
 // Remove deletes the first occurrence of a given element. O(n)
 func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
-	if dl.IsEmpty() {
-		return i.(T), errors.New("linked list empty")
+	var zero T
+	if dl.size == 0 {
+		return zero, errors.New("linked list empty")
 	}
 
 	for traveler := dl.head; traveler != nil; traveler = traveler.next {
@@ -190,13 +215,14 @@ func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
 			return dl.removeNode(traveler)
 		}
 	}
-	return i.(T), errors.New("value not found")
+	return zero, errors.New("value not found")
 }
 
 // RemoveAt removes and returns the element at a specific index. O(n)
 func (dl *DoublyLinkedList[T]) RemoveAt(idx int) (T, error) {
+	var zero T
 	if idx < 0 || idx >= dl.size {
-		return i.(T), errors.New("invalid index")
+		return zero, errors.New("invalid index")
 	}
 
 	var traveler *ListNode[T]
@@ -217,7 +243,9 @@ func (dl *DoublyLinkedList[T]) RemoveAt(idx int) (T, error) {
 
 // indexOf finds the index of an element in the list. O(n)
 func (dl *DoublyLinkedList[T]) indexOf(elem T) (int, error) {
-	if dl.IsEmpty() {
+	dl.mutex.RLock()
+	defer dl.mutex.RUnlock()
+	if dl.size == 0 {
 		return -1, errors.New("linked list empty")
 	}
 	iterNode := dl.head
@@ -246,6 +274,8 @@ func (dl *DoublyLinkedList[T]) Contains(elem T) (bool, error) {
 func (dl *DoublyLinkedList[T]) Iterate() Iterator[T] {
 	iterChan := make(chan T)
 	go func() {
+		dl.mutex.RLock()
+		defer dl.mutex.RUnlock()
 		defer close(iterChan)
 		iterNode := dl.head
 		for iterNode != nil {
