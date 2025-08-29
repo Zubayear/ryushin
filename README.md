@@ -10,7 +10,7 @@ A **robust, efficient, and extensible** data structures library written in **pur
 
 This library is designed with:
 - **Performance** in mind – low allocations, cache-friendly.
-- **Concurrency safety** (optional) – safe variants for multi-goroutine workloads.
+- **Concurrency safety** – safe variants for multi-goroutine workloads.
 - **Ease of use** – clean API, well-documented, and consistent.
 - **Production-readiness** – tested and benchmarked.
 
