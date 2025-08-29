@@ -55,7 +55,6 @@ func TestBinaryHeapOperations(t *testing.T) {
 	}
 }
 
-// Test adding and polling strings in lexicographical order
 func TestBinaryHeapStringBasic(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 	values := []string{"apple", "banana", "cat", "aardvark", "dog"}
@@ -80,7 +79,6 @@ func TestBinaryHeapStringBasic(t *testing.T) {
 	}
 }
 
-// Test Peek on empty and non-empty string heap
 func TestBinaryHeapStringPeek(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 
@@ -99,7 +97,6 @@ func TestBinaryHeapStringPeek(t *testing.T) {
 	}
 }
 
-// Test Poll on empty string heap
 func TestBinaryHeapStringPollEmpty(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 	if _, err := bh.Poll(); err == nil {
@@ -107,7 +104,6 @@ func TestBinaryHeapStringPollEmpty(t *testing.T) {
 	}
 }
 
-// Test Clear with strings
 func TestBinaryHeapStringClear(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 	bh.Add("apple")
@@ -123,7 +119,6 @@ func TestBinaryHeapStringClear(t *testing.T) {
 	}
 }
 
-// Test duplicates in string heap
 func TestBinaryHeapStringDuplicates(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 	bh.Add("apple")
@@ -145,7 +140,6 @@ func TestBinaryHeapStringDuplicates(t *testing.T) {
 	}
 }
 
-// Test concurrent Add and Poll with strings
 func TestBinaryHeapStringConcurrent(t *testing.T) {
 	bh := priorityqueue.NewBinaryHeap[string]()
 	var wg sync.WaitGroup
@@ -167,7 +161,6 @@ func TestBinaryHeapStringConcurrent(t *testing.T) {
 		t.Errorf("expected size %d after concurrent adds, got %d", len(stringsToAdd), bh.Size())
 	}
 
-	// Concurrent polls
 	wg = sync.WaitGroup{}
 	results := make(chan string, len(stringsToAdd))
 	for i := 0; i < len(stringsToAdd); i++ {

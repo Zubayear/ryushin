@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func BenchmarkAddLast(b *testing.B) {
+func BenchmarkLinkedListAddLast(b *testing.B) {
 	dl := NewLinkedList[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -13,7 +13,7 @@ func BenchmarkAddLast(b *testing.B) {
 	}
 }
 
-func BenchmarkAddFirst(b *testing.B) {
+func BenchmarkLinkedListAddFirst(b *testing.B) {
 	dl := NewLinkedList[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -22,7 +22,7 @@ func BenchmarkAddFirst(b *testing.B) {
 	}
 }
 
-func BenchmarkRemoveFirst(b *testing.B) {
+func BenchmarkLinkedListRemoveFirst(b *testing.B) {
 	dl := NewLinkedList[int]()
 	for i := 0; i < 100000; i++ {
 		_, _ = dl.AddLast(i)
@@ -34,7 +34,7 @@ func BenchmarkRemoveFirst(b *testing.B) {
 	}
 }
 
-func BenchmarkRemoveLast(b *testing.B) {
+func BenchmarkLinkedListRemoveLast(b *testing.B) {
 	dl := NewLinkedList[int]()
 	for i := 0; i < 100000; i++ {
 		_, _ = dl.AddLast(i)
@@ -46,7 +46,7 @@ func BenchmarkRemoveLast(b *testing.B) {
 	}
 }
 
-func BenchmarkAddLastParallel(b *testing.B) {
+func BenchmarkLinkedListAddLastParallel(b *testing.B) {
 	dl := NewLinkedList[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -57,8 +57,7 @@ func BenchmarkAddLastParallel(b *testing.B) {
 	})
 }
 
-// Optional: Parallel remove benchmark
-func BenchmarkRemoveFirstParallel(b *testing.B) {
+func BenchmarkLinkedListRemoveFirstParallel(b *testing.B) {
 	dl := NewLinkedList[int]()
 	for i := 0; i < 100000; i++ {
 		_, _ = dl.AddLast(i)

@@ -12,7 +12,7 @@ func generateData(n int) []int {
 	return data
 }
 
-func BenchmarkPush(b *testing.B) {
+func BenchmarkStackPush(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	b.ReportAllocs()
@@ -25,7 +25,7 @@ func BenchmarkPush(b *testing.B) {
 	}
 }
 
-func BenchmarkPop(b *testing.B) {
+func BenchmarkStackPop(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	for _, v := range data {
@@ -41,7 +41,7 @@ func BenchmarkPop(b *testing.B) {
 	}
 }
 
-func BenchmarkPeek(b *testing.B) {
+func BenchmarkStackPeek(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	for _, v := range data {
@@ -55,7 +55,7 @@ func BenchmarkPeek(b *testing.B) {
 	}
 }
 
-func BenchmarkPushParallel(b *testing.B) {
+func BenchmarkStackPushParallel(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	b.ReportAllocs()
@@ -70,7 +70,7 @@ func BenchmarkPushParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkPopParallel(b *testing.B) {
+func BenchmarkStackPopParallel(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	for _, v := range data {
@@ -86,7 +86,7 @@ func BenchmarkPopParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkPeekParallel(b *testing.B) {
+func BenchmarkStackPeekParallel(b *testing.B) {
 	data := generateData(10000)
 	s := NewStack[int]()
 	for _, v := range data {
@@ -102,7 +102,7 @@ func BenchmarkPeekParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkPushLarge(b *testing.B) {
+func BenchmarkStackPushLarge(b *testing.B) {
 	data := generateData(100000)
 	s := NewStack[int]()
 	b.ReportAllocs()

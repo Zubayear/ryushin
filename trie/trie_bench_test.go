@@ -19,7 +19,7 @@ func generateWords(n int) []string {
 	return words
 }
 
-func BenchmarkInsert(b *testing.B) {
+func BenchmarkTrieInsert(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		t := NewTrie()
 		for _, word := range words {
@@ -28,7 +28,7 @@ func BenchmarkInsert(b *testing.B) {
 	}
 }
 
-func BenchmarkSearch(b *testing.B) {
+func BenchmarkTrieSearch(b *testing.B) {
 	t := NewTrie()
 	for _, word := range words {
 		t.Insert(word)
@@ -40,7 +40,7 @@ func BenchmarkSearch(b *testing.B) {
 	}
 }
 
-func BenchmarkStartsWith(b *testing.B) {
+func BenchmarkTrieStartsWith(b *testing.B) {
 	t := NewTrie()
 	for _, word := range words {
 		t.Insert(word)
@@ -52,7 +52,7 @@ func BenchmarkStartsWith(b *testing.B) {
 	}
 }
 
-func BenchmarkGetWordsWithPrefix(b *testing.B) {
+func BenchmarkTrieGetWordsWithPrefix(b *testing.B) {
 	t := NewTrie()
 	for _, word := range words {
 		t.Insert(word)
@@ -64,7 +64,7 @@ func BenchmarkGetWordsWithPrefix(b *testing.B) {
 	}
 }
 
-func BenchmarkInsertParallel(b *testing.B) {
+func BenchmarkTrieInsertParallel(b *testing.B) {
 	largeWords := generateWords(10000)
 	t := NewTrie()
 	b.ResetTimer()
@@ -79,7 +79,7 @@ func BenchmarkInsertParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkSearchParallel(b *testing.B) {
+func BenchmarkTrieSearchParallel(b *testing.B) {
 	t := NewTrie()
 	largeWords := generateWords(10000)
 	for _, w := range largeWords {
@@ -96,7 +96,7 @@ func BenchmarkSearchParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkMapPrefixSearch(b *testing.B) {
+func BenchmarkTrieMapPrefixSearch(b *testing.B) {
 	wordMap := make(map[string]bool)
 	for _, w := range words {
 		wordMap[w] = true
@@ -113,7 +113,7 @@ func BenchmarkMapPrefixSearch(b *testing.B) {
 	}
 }
 
-func BenchmarkInsertLarge(b *testing.B) {
+func BenchmarkTrieInsertLarge(b *testing.B) {
 	largeWords := generateWords(100000)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -124,7 +124,7 @@ func BenchmarkInsertLarge(b *testing.B) {
 	}
 }
 
-func BenchmarkStartsWithParallel(b *testing.B) {
+func BenchmarkTrieStartsWithParallel(b *testing.B) {
 	t := NewTrie()
 	for _, word := range words {
 		t.Insert(word)
@@ -138,7 +138,7 @@ func BenchmarkStartsWithParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkGetWordsWithPrefixParallel(b *testing.B) {
+func BenchmarkTrieGetWordsWithPrefixParallel(b *testing.B) {
 	t := NewTrie()
 	for _, word := range words {
 		t.Insert(word)
@@ -152,7 +152,7 @@ func BenchmarkGetWordsWithPrefixParallel(b *testing.B) {
 	})
 }
 
-func BenchmarkMapPrefixSearchParallel(b *testing.B) {
+func BenchmarkTrieMapPrefixSearchParallel(b *testing.B) {
 	wordMap := make(map[string]bool)
 	for _, w := range words {
 		wordMap[w] = true

@@ -23,6 +23,10 @@ func generateData(n int) []string {
 	return data
 }
 
+// ---------------------------
+// Sequential Benchmarks
+// ---------------------------
+
 func BenchmarkBinaryHeapAdd(b *testing.B) {
 	data := generateData(100000)
 	bh := NewBinaryHeap[string]()
@@ -35,4 +39,118 @@ func BenchmarkBinaryHeapAdd(b *testing.B) {
 		}
 		bh.Clear()
 	}
+}
+
+func BenchmarkBinaryHeapPeek(b *testing.B) {
+	data := generateData(100000)
+	bh := NewBinaryHeap[string]()
+	for _, v := range data {
+		bh.Add(v)
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = bh.Peek()
+	}
+}
+
+func BenchmarkBinaryHeapPoll(b *testing.B) {
+	data := generateData(100000)
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		bh := NewBinaryHeap[string]()
+		for _, v := range data {
+			bh.Add(v)
+		}
+		for !bh.IsEmpty() {
+			_, _ = bh.Poll()
+		}
+	}
+}
+
+func BenchmarkBinaryHeapClear(b *testing.B) {
+	data := generateData(100000)
+	bh := NewBinaryHeap[string]()
+	for _, v := range data {
+		bh.Add(v)
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		bh.Clear()
+	}
+}
+
+// ---------------------------
+// Parallel Benchmarks
+// ---------------------------
+
+func BenchmarkBinaryHeapAddParallel(b *testing.B) {
+	data := generateData(100000)
+	bh := NewBinaryHeap[string]()
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			for _, v := range data {
+				bh.Add(v)
+			}
+			bh.Clear()
+		}
+	})
+}
+
+func BenchmarkBinaryHeapPeekParallel(b *testing.B) {
+	data := generateData(100000)
+	bh := NewBinaryHeap[string]()
+	for _, v := range data {
+		bh.Add(v)
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			_, _ = bh.Peek()
+		}
+	})
+}
+
+func BenchmarkBinaryHeapPollParallel(b *testing.B) {
+	data := generateData(100000)
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			bh := NewBinaryHeap[string]()
+			for _, v := range data {
+				bh.Add(v)
+			}
+			for !bh.IsEmpty() {
+				_, _ = bh.Poll()
+			}
+		}
+	})
+}
+
+func BenchmarkBinaryHeapClearParallel(b *testing.B) {
+	data := generateData(100000)
+	bh := NewBinaryHeap[string]()
+	for _, v := range data {
+		bh.Add(v)
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			bh.Clear()
+		}
+	})
 }
