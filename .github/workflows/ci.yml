@@ -1,0 +1,35 @@
+name: Sonic CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  go_lint_and_test:
+    name: Code lint and tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '^1.24'
+      - name: Run Go Linter
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: -E gofmt
+      - name: Run tests with coverage
+        run: go test ./... -v -covermode=atomic -coverprofile=coverage.out
+  codespell:
+    name: Check for spelling
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: codespell-project/actions-codespell@master
+        with:
+          ignore_words_list: "actualy,nwe"
+          skip: 'go.mod,go.sum'

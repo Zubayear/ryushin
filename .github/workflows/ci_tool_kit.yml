@@ -1,0 +1,32 @@
+name: CI Tool Kit
+
+on:
+  pull_request:
+
+jobs:
+  citk:
+    name: Code style and tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "^1.24"
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+          key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+      - name: Install CITK tool
+        run: |
+          go install github.com/tjgurwara99/citk@v0.2.1
+      - name: Run CITK tool
+        run: |
+          citk check -l go -b master
