@@ -146,4 +146,12 @@ func TestTrieEmptyString(t *testing.T) {
 	if tr.Size() != 0 {
 		t.Errorf("Expected size 0, got %v\n", tr.Size())
 	}
+	result := tr.GetWordsWithPrefix("")
+	if result != nil {
+		t.Errorf("Expected empty slice, got %v\n", len(result))
+	}
+	f := tr.Remove("")
+	if f {
+		t.Errorf("Expected false, got %v\n", f)
+	}
 }
