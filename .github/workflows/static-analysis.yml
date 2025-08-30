@@ -26,12 +26,13 @@ jobs:
         run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.out
 
   codeql:
-    name: CodeQL Security Scan
-    uses: github/codeql-action/init@v2
-    with:
-      languages: go
-
-  codeql-analyze:
-    name: Analyze CodeQL
-    needs: codeql
-    uses: github/codeql-action/analyze@v2
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: go
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
