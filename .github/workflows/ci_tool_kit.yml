@@ -26,7 +26,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
       - name: Install CITK tool
         run: |
-          go install github.com/tjgurwara99/citk@v0.2.1
+          go install github.com/tjgurwara99/citk@latest
       - name: Run CITK tool
         run: |
-          citk check -l go -b master
+          citk check -l go -b main
