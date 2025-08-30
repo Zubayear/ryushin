@@ -1,0 +1,40 @@
+name: Code Quality & Security
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  codacy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "^1.24"
+
+      - name: Install Codacy Reporter
+        run: |
+          curl -Ls https://coverage.codacy.com/get.sh | bash
+
+      - name: Run Codacy analysis
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.out
+
+  codeql:
+    name: CodeQL Security Scan
+    uses: github/codeql-action/init@v2
+    with:
+      languages: go
+
+  codeql-analyze:
+    name: Analyze CodeQL
+    needs: codeql
+    uses: github/codeql-action/analyze@v2
