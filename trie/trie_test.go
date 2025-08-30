@@ -152,6 +152,6 @@ func TestTrieEmptyString(t *testing.T) {
 	}
 	f := tr.Remove("")
 	if f {
-		t.Errorf("Expected false, got %v\n", f)
+		t.Errorf("Expected %v, got %v\n", false, f)
 	}
 }
