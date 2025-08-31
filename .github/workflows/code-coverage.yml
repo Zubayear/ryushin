@@ -24,7 +24,7 @@ jobs:
           go test -coverprofile="${{ env.COVERAGE_FILE }}" -covermode=atomic ./...
       - name: Upload coverage to codecov - (tokenless for fork PRs)
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@fdcc8476540edceab3de004e990f80d881c6cc00
         with:
           files: "${{ env.COVERAGE_FILE }}"
           fail_ci_if_error: true
