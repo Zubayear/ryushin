@@ -30,7 +30,7 @@ jobs:
           fail_ci_if_error: true
       - name: Upload coverage to codecov - (with token for internal branches)
         if: "! github.event.pull_request.head.repo.fork "
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@fdcc8476540edceab3de004e990f80d881c6cc00
         with:
           files: "${{ env.COVERAGE_FILE }}"
           fail_ci_if_error: true
