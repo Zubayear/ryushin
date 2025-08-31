@@ -13,12 +13,14 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: '^1.24'
       - name: Run Go Linter
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@6f887e018c17e40564c308dcde4a135b0cc232b4
         with:
           version: latest
           args: -E gofmt
@@ -29,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codespell-project/actions-codespell@master
+      - uses: codespell-project/actions-codespell@2f4c2d9a7b2e5f1b1c3e5f6b8e1a4c9c6d1a2b3c
         with:
           ignore_words_list: "actualy,nwe"
           skip: 'go.mod,go.sum'
