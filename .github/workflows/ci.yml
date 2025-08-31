@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codespell-project/actions-codespell@v2
+      - uses: codespell-project/actions-codespell@71286cb40fe09b3222aff820311357b4e67cc206
         with:
           ignore_words_list: "actualy,nwe"
           skip: 'go.mod,go.sum'
