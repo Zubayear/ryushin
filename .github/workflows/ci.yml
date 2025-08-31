@@ -20,7 +20,7 @@ jobs:
         with:
           go-version: '^1.24'
       - name: Run Go Linter
-        uses: golangci/golangci-lint-action@6f887e018c17e40564c308dcde4a135b0cc232b4
+        uses: golangci/golangci-lint-action@3c28b2cb75e1933038fca129074454e12a0f45d8
         with:
           version: latest
           args: -E gofmt
