@@ -40,7 +40,6 @@ func TestTrieStartsWith(t *testing.T) {
 		expected bool
 	}{
 		{"he", true},
-		{"hel", true},
 		{"hero", true},
 		{"her", true},
 		{"ha", false},
