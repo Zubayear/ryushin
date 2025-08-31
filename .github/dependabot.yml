@@ -1,10 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: github-actions
-    directory: /
+  - package-ecosystem: "github-actions"
+    directory: "/"
     groups:
       github-actions:
         patterns:
-          - "*"  # Group all Actions updates into a single larger pull request
+          - "*"
     schedule:
-      interval: weekly
+      interval: "weekly"
+  - package-ecosystem: "gomod" # Add this section for Go modules
+    directory: "/"
+    schedule:
+      interval: "weekly"

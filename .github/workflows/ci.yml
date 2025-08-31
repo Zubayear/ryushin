@@ -24,14 +24,14 @@ jobs:
         with:
           version: latest
           args: -E gofmt
-      - name: Run tests with coverage
-        run: go test ./... -v -covermode=atomic -coverprofile=coverage.out
+      - name: Run tests
+        run: go test ./...
   codespell:
     name: Check for spelling
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: codespell-project/actions-codespell@2f4c2d9a7b2e5f1b1c3e5f6b8e1a4c9c6d1a2b3c
+      - uses: codespell-project/actions-codespell@master
         with:
           ignore_words_list: "actualy,nwe"
           skip: 'go.mod,go.sum'
