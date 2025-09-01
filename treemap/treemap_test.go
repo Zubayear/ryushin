@@ -2,6 +2,7 @@ package treemap
 
 import (
 	"crypto/rand"
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -72,6 +73,34 @@ func TestDelete(t *testing.T) {
 	tree.Remove(100) // deleting non-existing key
 	if tree.Size() != 2 {
 		t.Errorf("Size changed after deleting non-existing key")
+	}
+
+	tree = NewTreeMap[int, string]()
+
+	// Build a tree designed to hit fixDelete cases
+	keys := []int{10, 5, 20, 2, 7, 15, 25}
+	for _, k := range keys {
+		tree.Put(k, fmt.Sprintf("%d", k))
+	}
+
+	// Delete leaf (simple case)
+	tree.Remove(2)
+
+	// Delete node with one child
+	tree.Remove(5)
+
+	// Delete node with two children
+	tree.Remove(20)
+
+	// Delete root
+	tree.Remove(10)
+
+	// After deletions, tree should still be valid Red-Black
+	if key, ok := tree.FirstKey(); !ok || key != 7 {
+		t.Errorf("Expected first key 7, got %v", key)
+	}
+	if key, ok := tree.LastKey(); !ok || key != 25 {
+		t.Errorf("Expected last key 25, got %v", key)
 	}
 }
 
@@ -321,5 +350,16 @@ func TestGetUncle(t *testing.T) {
 	uncleRoot := tree.getUncle(tree.root)
 	if uncleRoot != nil {
 		t.Errorf("Expected nil uncle for root, got %v", uncleRoot.key)
+	}
+}
+
+func TestInorder(t *testing.T) {
+	treeMap := NewTreeMap[int, int]()
+	treeMap.Put(1, 1)
+	treeMap.Put(2, 1)
+	treeMap.Put(3, 1)
+	keys := treeMap.Keys()
+	if len(keys) != 3 {
+		t.Errorf("Expected len %v, Got %v", 3, len(keys))
 	}
 }

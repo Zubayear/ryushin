@@ -486,17 +486,16 @@ func (t *TreeMap[K, V]) Max() (K, V) {
 	return current.key, current.value
 }
 
-func (t *TreeMap[K, V]) Keys() []any {
-	var result []any
-	t.inorder(t.root, result)
+func (t *TreeMap[K, V]) Keys() []K {
+	var result []K
+	t.inorder(t.root, &result)
 	return result
 }
 
-func (t *TreeMap[K, V]) inorder(n *Node[K, V], result []any) {
-	// left root right
+func (t *TreeMap[K, V]) inorder(n *Node[K, V], result *[]K) {
 	if n != nil {
 		t.inorder(n.left, result)
-		result = append(result, n.value)
+		*result = append(*result, n.key)
 		t.inorder(n.right, result)
 	}
 }
