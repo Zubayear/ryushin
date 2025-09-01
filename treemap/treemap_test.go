@@ -1,14 +1,12 @@
 package treemap
 
 import (
-	"math/rand"
+	"crypto/rand"
+	"math/big"
 	"testing"
 
 	_ "golang.org/x/exp/constraints"
 )
-
-// go test ./... -coverprofile=coverage.out
-// go tool cover -html="coverage.out"
 
 func TestPutAndGet(t *testing.T) {
 	tree := NewTreeMap[int, string]()
@@ -141,8 +139,8 @@ func TestRandomInsertDelete(t *testing.T) {
 
 	// Insert random values
 	for i := 0; i < n; i++ {
-		val := rand.Intn(10000)
-		tree.Put(val, val)
+		val, _ := rand.Int(rand.Reader, big.NewInt(10000))
+		tree.Put(int(val.Int64()), int(val.Int64()))
 	}
 
 	// Check size (should be <= n due to duplicates)
@@ -152,8 +150,8 @@ func TestRandomInsertDelete(t *testing.T) {
 
 	// Delete some random keys
 	for i := 0; i < n/2; i++ {
-		key := rand.Intn(10000)
-		tree.Remove(key)
+		key, _ := rand.Int(rand.Reader, big.NewInt(10000))
+		tree.Remove(int(key.Int64()))
 	}
 }
 
