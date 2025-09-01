@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Set up go
@@ -35,7 +35,7 @@ jobs:
     name: Check for spelling
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: codespell-project/actions-codespell@71286cb40fe09b3222aff820311357b4e67cc206
         with:
           ignore_words_list: "actualy,nwe"
