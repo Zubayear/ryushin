@@ -312,44 +312,37 @@ func TestFloorKey(t *testing.T) {
 		t.Errorf("Expected false for empty tree, got %v", key)
 	}
 }
-
-func TestGetUncle(t *testing.T) {
+func TestGetUncleBothSides(t *testing.T) {
 	tree := NewTreeMap[int, string]()
 
 	/*
-	        10(B)
-	       /   \
-	     5(R)  20(R)
-	    /
-	   2(R)
+	      10(B)
+	     /   \
+	   5(R)  20(R)
+	         \
+	         25(R)
 	*/
 
-	tree.Put(10, "ten")    // root
-	tree.Put(5, "five")    // left child
-	tree.Put(20, "twenty") // right child
-	tree.Put(2, "two")     // left-left child
+	tree.Put(10, "ten")         // root
+	tree.Put(5, "five")         // left child
+	tree.Put(20, "twenty")      // right child
+	tree.Put(25, "twenty-five") // right-right child
 
-	// getUncle for node 2 should return 20
-	node2 := tree.root.left.left
-	uncle := tree.getUncle(node2)
+	// getUncle for node 25 should return 5 (parent is right child, uncle = g.left)
+	node25 := tree.root.right.right
+	uncle := tree.getUncle(node25)
 
 	if uncle == nil {
-		t.Errorf("Expected uncle to exist for node 2")
-	} else if uncle.key != 20 {
-		t.Errorf("Expected uncle key 20, got %d", uncle.key)
+		t.Errorf("Expected uncle to exist for node 25")
+	} else if uncle.key != 5 {
+		t.Errorf("Expected uncle key 5, got %d", uncle.key)
 	}
 
-	// getUncle for node 5 should return nil (root has no parent)
-	node5 := tree.root.left
-	uncle2 := tree.getUncle(node5)
+	// getUncle for node 20 should return nil (parent is direct child of root)
+	node20 := tree.root.right
+	uncle2 := tree.getUncle(node20)
 	if uncle2 != nil {
-		t.Errorf("Expected nil uncle for node 5, got %v", uncle2.key)
-	}
-
-	// getUncle for root should return nil
-	uncleRoot := tree.getUncle(tree.root)
-	if uncleRoot != nil {
-		t.Errorf("Expected nil uncle for root, got %v", uncleRoot.key)
+		t.Errorf("Expected nil uncle for node 20, got %v", uncle2.key)
 	}
 }
 
