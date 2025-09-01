@@ -113,7 +113,7 @@ func (t *TreeMap[K, V]) fixInsert(n *Node[K, V]) {
 				u.color = Black
 				g.color = Red
 				n = g
-			} else {                     // uncle is black
+			} else { // uncle is black
 				if n == n.parent.right { // Case 2: left-right
 					n = n.parent
 					t.rotateLeft(n)
@@ -130,7 +130,7 @@ func (t *TreeMap[K, V]) fixInsert(n *Node[K, V]) {
 				u.color = Black
 				g.color = Red
 				n = g
-			} else {                    // uncle is black
+			} else { // uncle is black
 				if n == n.parent.left { // Case 2: right-left
 					n = n.parent
 					t.rotateRight(n)
