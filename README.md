@@ -43,14 +43,12 @@ This library is designed with:
 ```
 cpu: 12th Gen Intel(R) Core(TM) i7-1255U
 pkg: github.com/Zubayear/sonic/linkedlist
-BenchmarkBinaryHeapAdd-12              	      46	  22188485 ns/op	 8923515 B/op	      28 allocs/op
-BenchmarkBinaryHeapPeek-12             	42151258	        27.76 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBinaryHeapPoll-12             	      16	  67635712 ns/op	 8923558 B/op	      29 allocs/op
-BenchmarkBinaryHeapClear-12            	31316138	        40.48 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBinaryHeapAddParallel-12      	      76	  30528826 ns/op	 8631298 B/op	      25 allocs/op
-BenchmarkBinaryHeapPeekParallel-12     	 7108928	       161.0 ns/op	       0 B/op	       0 allocs/op
-BenchmarkBinaryHeapPollParallel-12     	      46	  24318991 ns/op	 8923681 B/op	      29 allocs/op
-BenchmarkBinaryHeapClearParallel-12    	 5849760	       184.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLinkedListAddLast-12                	23752772	        50.82 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListAddFirst-12               	24681962	        49.85 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListRemoveFirst-12            	32922171	        36.84 ns/op	      15 B/op	       0 allocs/op
+BenchmarkLinkedListRemoveLast-12             	35177410	        37.21 ns/op	      15 B/op	       0 allocs/op
+BenchmarkLinkedListAddLastParallel-12        	11632742	       106.7 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListRemoveFirstParallel-12    	13249624	        99.65 ns/op	      15 B/op
 
 pkg: github.com/Zubayear/sonic/priorityqueue
 BenchmarkBinaryHeapAdd-12              	      72	  15216388 ns/op	 8923576 B/op	      28 allocs/op
