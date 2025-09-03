@@ -11,7 +11,7 @@ env:
 
 jobs:
   upload_code_coverage:
-    #
+    name: Upload code coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
