@@ -6,7 +6,9 @@
 [![Build Status](https://github.com/Zubayear/sonic/actions/workflows/go.yml/badge.svg)](https://github.com/Zubayear/sonic/actions)
 [![codecov](https://codecov.io/gh/Zubayear/sonic/branch/main/graph/badge.svg)](https://codecov.io/gh/Zubayear/sonic)
 
-A **robust, efficient, and extensible** data structures library written in **pure Go**.
+*Sonic* is a **robust**, **high-performance**, and **concurrency-safe** data structures library written in pure Go.
+
+It is designed to help Go developers stop reinventing the wheel by providing production-ready collections with clean APIs and built-in thread-safety.
 
 This library is designed with:
 - **Performance** in mind – low allocations, cache-friendly.
@@ -29,26 +31,54 @@ This library is designed with:
   - `AVL Tree`
   - `Red-Black Tree`
   - `Trie`
-- Graph representations:
-  - Adjacency list
-  - Adjacency matrix
 - Priority structures:
   - `Heap` (min & max)
   - `PriorityQueue`
-- Thread-safe variants with `sync.Mutex` or `sync.RWMutex`.
+- Thread-safe variants with `sync.RWMutex`.
 - Custom iterators for all collections.
+
+---
+## 🚀 Why Sonic?
+- **Performance-oriented**: Optimized for low allocations and cache-friendly operations
+- **Concurrency-safe**: Multi-goroutine safe implementations
+- **Ease of use**: Idiomatic APIs, consistent design
+- **Production-ready**: Tested, benchmarked, and reliable
+
+---
+## 💡 Quick Example
+```
+package main
+
+import (
+    "fmt"
+    "github.com/Zubayear/sonic"
+)
+
+func main() {
+    tr := NewTrie()
+
+	words := []string{"hello", "helium", "he", "hero"}
+	for _, w := range words {
+		tr.Insert(w)
+	}
+	
+	ok := tr.Search("hello")
+}
+```
 
 ---
 ## 💪 Benchmark
 ```
 cpu: 12th Gen Intel(R) Core(TM) i7-1255U
 pkg: github.com/Zubayear/sonic/linkedlist
-BenchmarkLinkedListAddLast-12                	23752772	        50.82 ns/op	      24 B/op	       1 allocs/op
-BenchmarkLinkedListAddFirst-12               	24681962	        49.85 ns/op	      24 B/op	       1 allocs/op
-BenchmarkLinkedListRemoveFirst-12            	32922171	        36.84 ns/op	      15 B/op	       0 allocs/op
-BenchmarkLinkedListRemoveLast-12             	35177410	        37.21 ns/op	      15 B/op	       0 allocs/op
-BenchmarkLinkedListAddLastParallel-12        	11632742	       106.7 ns/op	      24 B/op	       1 allocs/op
-BenchmarkLinkedListRemoveFirstParallel-12    	13249624	        99.65 ns/op	      15 B/op
+BenchmarkBinaryHeapAdd-12              	      46	  22188485 ns/op	 8923515 B/op	      28 allocs/op
+BenchmarkBinaryHeapPeek-12             	42151258	        27.76 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapPoll-12             	      16	  67635712 ns/op	 8923558 B/op	      29 allocs/op
+BenchmarkBinaryHeapClear-12            	31316138	        40.48 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapAddParallel-12      	      76	  30528826 ns/op	 8631298 B/op	      25 allocs/op
+BenchmarkBinaryHeapPeekParallel-12     	 7108928	       161.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapPollParallel-12     	      46	  24318991 ns/op	 8923681 B/op	      29 allocs/op
+BenchmarkBinaryHeapClearParallel-12    	 5849760	       184.9 ns/op	       0 B/op	       0 allocs/op
 
 pkg: github.com/Zubayear/sonic/priorityqueue
 BenchmarkBinaryHeapAdd-12              	      72	  15216388 ns/op	 8923576 B/op	      28 allocs/op
@@ -95,14 +125,14 @@ BenchmarkTrieMapPrefixSearchParallel-12       	22304251	        49.68 ns/op
 ---
 
 ## 📦 Installation
-
 ```
 go get github.com/Zubayear/sonic
 ```
-
 ---
-
 ## 🤝 Contributing
-
-We welcome contributions from the community! Whether it’s fixing bugs, adding new data structures, improving documentation, or writing tests, your help is appreciated.
+We welcome contributions! Whether you want to:
+- Fix bugs
+- Add new data structures
+- Improve documentation
+- Write benchmarks or tests
 
