@@ -27,7 +27,9 @@ jobs:
       - name: Commit and push changes
         run: |
           git add README.md
-          git diff-index --quiet HEAD || (
+          if ! git diff-index --quiet HEAD; then
             git commit -m "chore: update documentation"
             git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:master
-          )
+          else
+            echo "No changes detected"
+          fi
