@@ -5,6 +5,8 @@ on:
 
 jobs:
   generate_readme:
+    permissions:
+      contents: write
     name: Markdown Generation
     runs-on: ubuntu-latest
     steps:
@@ -24,12 +26,11 @@ jobs:
       - name: Update README.md file
         run: |
           godocmd -r -module ./ -w
-      - name: Commit and push changes
+      - name: Commit changes if README.md is different
         run: |
-          git add README.md
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "chore: update documentation"
-            git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:master
+          if [[ `git status --porcelain` ]]; then
+            git commit -am "Updated Documentation in README.md"
+            git push
           else
-            echo "No changes detected"
+            echo "NO CHANGES DETECTED"
           fi
