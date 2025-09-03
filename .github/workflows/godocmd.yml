@@ -24,11 +24,10 @@ jobs:
       - name: Update README.md file
         run: |
           godocmd -r -module ./ -w
-      - name: Commit changes if README.md is different
+      - name: Commit and push changes
         run: |
-          if [[ `git status --porcelain` ]]; then
-            git commit -am "Updated Documentation in README.md"
-            git push
-          else
-            echo "NO CHANGES DETECTED"
-          fi
+          git add README.md
+          git diff-index --quiet HEAD || (
+            git commit -m "chore: update documentation"
+            git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:master
+          )
