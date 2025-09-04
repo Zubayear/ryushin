@@ -10,7 +10,7 @@ import (
 
 // TestZeroValueDeque ensures the zero value is usable and returns errors on empty ops.
 func TestZeroValueDeque(t *testing.T) {
-	var d Deque[int]
+	d := NewDeque[int]()
 
 	if !d.IsEmpty() {
 		t.Fatalf("expected zero-value deque to be empty")
@@ -35,7 +35,7 @@ func TestZeroValueDeque(t *testing.T) {
 
 // TestOfferAndPollFirst verifies front insertions and removals.
 func TestOfferAndPollFirst(t *testing.T) {
-	var d Deque[int]
+	d := NewDeque[int]()
 
 	if ok, err := d.OfferFirst(1); !ok || err != nil {
 		t.Fatalf("OfferFirst failed: ok=%v err=%v", ok, err)
@@ -64,7 +64,7 @@ func TestOfferAndPollFirst(t *testing.T) {
 
 // TestOfferAndPollLast verifies back insertions and removals.
 func TestOfferAndPollLast(t *testing.T) {
-	var d Deque[int]
+	d := NewDeque[int]()
 
 	if ok, err := d.OfferLast(1); !ok || err != nil {
 		t.Fatalf("OfferLast failed: ok=%v err=%v", ok, err)
@@ -89,7 +89,7 @@ func TestOfferAndPollLast(t *testing.T) {
 
 // TestMixedOperations tests a sequence of mixed operations and peek behavior.
 func TestMixedOperations(t *testing.T) {
-	var d Deque[string]
+	d := NewDeque[string]()
 
 	must := func(ok bool, err error) {
 		if !ok || err != nil {
@@ -150,7 +150,7 @@ func TestMixedOperations(t *testing.T) {
 
 // TestRemoveExistingAndNonExisting verifies Remove behavior for present/absent items.
 func TestRemoveExistingAndNonExisting(t *testing.T) {
-	var d Deque[int]
+	d := NewDeque[int]()
 
 	// Add elements including zero value to exercise edge cases.
 	if ok, err := d.OfferLast(0); !ok || err != nil {
@@ -187,7 +187,8 @@ func TestRemoveExistingAndNonExisting(t *testing.T) {
 
 // TestErrorsOnEmptyAfterDrains ensures error paths after draining the deque.
 func TestErrorsOnEmptyAfterDrains(t *testing.T) {
-	var d Deque[int]
+	d := NewDeque[int]()
+  
 	_, _ = d.OfferFirst(10)
 	_, _ = d.OfferLast(20)
 	_, _ = d.PollFirst()
@@ -218,7 +219,8 @@ func TestConcurrency(t *testing.T) {
 	)
 	total := producers * perProducer
 
-	var d Deque[int]
+	d := NewDeque[int]()
+
 	var consumed int64
 
 	var wgProducers sync.WaitGroup

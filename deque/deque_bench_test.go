@@ -8,7 +8,7 @@ import (
 
 // Benchmark OfferFirst on a growing deque.
 func BenchmarkOfferFirst(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -20,7 +20,7 @@ func BenchmarkOfferFirst(b *testing.B) {
 
 // Benchmark OfferLast on a growing deque.
 func BenchmarkOfferLast(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -32,7 +32,7 @@ func BenchmarkOfferLast(b *testing.B) {
 
 // Benchmark PollFirst by preloading then draining exactly b.N elements.
 func BenchmarkPollFirst(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	for i := 0; i < b.N; i++ {
 		if _, err := d.OfferLast(i); err != nil {
 			b.Fatalf("OfferLast preload error: %v", err)
@@ -49,7 +49,7 @@ func BenchmarkPollFirst(b *testing.B) {
 
 // Benchmark PollLast by preloading then draining exactly b.N elements.
 func BenchmarkPollLast(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	for i := 0; i < b.N; i++ {
 		if _, err := d.OfferLast(i); err != nil {
 			b.Fatalf("OfferLast preload error: %v", err)
@@ -66,7 +66,7 @@ func BenchmarkPollLast(b *testing.B) {
 
 // Benchmark PeekFirst; maintains at least one element to avoid errors.
 func BenchmarkPeekFirst(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	if _, err := d.OfferLast(1); err != nil {
 		b.Fatalf("OfferLast preload error: %v", err)
 	}
@@ -81,7 +81,7 @@ func BenchmarkPeekFirst(b *testing.B) {
 
 // Benchmark PeekLast; maintains at least one element to avoid errors.
 func BenchmarkPeekLast(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	if _, err := d.OfferLast(1); err != nil {
 		b.Fatalf("OfferLast preload error: %v", err)
 	}
@@ -96,7 +96,7 @@ func BenchmarkPeekLast(b *testing.B) {
 
 // Benchmark a mixed workload: alternating front/back push and pop.
 func BenchmarkMixed(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -126,7 +126,7 @@ func BenchmarkMixed(b *testing.B) {
 
 // Parallel benchmark for OfferFirst/OfferLast on a shared deque.
 func BenchmarkOfferParallel(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	b.ReportAllocs()
 	b.ResetTimer()
 	b.RunParallel(func(pb *testing.PB) {
@@ -149,7 +149,7 @@ func BenchmarkOfferParallel(b *testing.B) {
 
 // Parallel mixed producer/consumer: each iteration does one push and one pop to avoid emptiness.
 func BenchmarkParallelMixed(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	// Preload a small buffer to reduce initial empty errors.
 	for i := 0; i < 1024; i++ {
 		_, _ = d.OfferLast(i)
@@ -179,7 +179,7 @@ func BenchmarkParallelMixed(b *testing.B) {
 
 // Benchmark Remove for present and absent keys using strings to avoid integer equality shortcuts.
 func BenchmarkRemove(b *testing.B) {
-	var d Deque[string]
+	d := NewDeque[string]()
 	// Preload with duplicates and a target key.
 	for i := 0; i < 10000; i++ {
 		_, _ = d.OfferLast("k" + strconv.Itoa(i%100))
@@ -201,7 +201,7 @@ func BenchmarkRemove(b *testing.B) {
 
 // Benchmark Size and IsEmpty for overhead.
 func BenchmarkSizeIsEmpty(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	var sink int
 	var sinkBool bool
 	_, _ = d.OfferLast(1)
@@ -220,7 +220,7 @@ func BenchmarkSizeIsEmpty(b *testing.B) {
 
 // Optional: benchmark under mild contention with coordinated producers and consumers.
 func BenchmarkCoordinatedParallel(b *testing.B) {
-	var d Deque[int]
+	d := NewDeque[int]()
 	var wg sync.WaitGroup
 	iters := b.N
 
