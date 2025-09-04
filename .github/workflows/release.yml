@@ -14,5 +14,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '^1.24'
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v4
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref }}
