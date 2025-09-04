@@ -188,6 +188,7 @@ func TestRemoveExistingAndNonExisting(t *testing.T) {
 // TestErrorsOnEmptyAfterDrains ensures error paths after draining the deque.
 func TestErrorsOnEmptyAfterDrains(t *testing.T) {
 	d := NewDeque[int]()
+  
 	_, _ = d.OfferFirst(10)
 	_, _ = d.OfferLast(20)
 	_, _ = d.PollFirst()
@@ -219,6 +220,7 @@ func TestConcurrency(t *testing.T) {
 	total := producers * perProducer
 
 	d := NewDeque[int]()
+
 	var consumed int64
 
 	var wgProducers sync.WaitGroup
