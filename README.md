@@ -38,7 +38,7 @@ This library is designed with:
 - Custom iterators for all collections.
 
 ---
-## 🚀 Why Sonic?
+## 🚀 Why Ryushin?
 - **Performance-oriented**: Optimized for low allocations and cache-friendly operations
 - **Concurrency-safe**: Multi-goroutine safe implementations
 - **Ease of use**: Idiomatic APIs, consistent design
