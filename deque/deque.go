@@ -1,5 +1,3 @@
-// Package deque provides a generic double-ended queue (deque) implementation.
-// A Deque allows insertion and removal at both the front and the back in O(1) time.
 package deque
 
 import "github.com/Zubayear/sonic/linkedlist"
@@ -8,7 +6,17 @@ import "github.com/Zubayear/sonic/linkedlist"
 // It supports adding, removing, and peeking elements from both ends in O(1) time.
 // Concurrency: All methods on Deque are safe for concurrent use.
 type Deque[T comparable] struct {
-	data linkedlist.DoublyLinkedList[T]
+	data *linkedlist.DoublyLinkedList[T]
+}
+
+// NewDeque returns a new, empty Deque[T] backed by a doubly linked list.
+// The returned deque is ready to use immediately.
+// Time Complexity: O(1)
+// Concurrency: Safe for concurrent use by multiple goroutines.
+func NewDeque[T comparable]() *Deque[T] {
+	return &Deque[T]{
+		data: linkedlist.NewLinkedList[T](),
+	}
 }
 
 // OfferFirst inserts the specified element at the front of the deque.
