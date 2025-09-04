@@ -364,3 +364,126 @@ We welcome contributions! Whether you want to:
 
 ---
 </details>
+# Packages:
+
+<details>
+	<summary> <strong> deque </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewDeque`](./deque/deque.go#L16):  NewDeque returns a new, empty Deque[T] backed by a doubly linked list. The returned deque is ready to use immediately. Time Complexity: O(1) Concurrency: Safe for concurrent use by multiple goroutines.
+
+---
+##### Types
+
+1. [`Deque`](./deque/deque.go#L8): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> linkedlist </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewLinkedList`](./linkedlist/linked_list.go#L34):  NewLinkedList initializes and returns a new empty doubly linked list.
+2. [`NewListNode`](./linkedlist/linked_list.go#L18):  NewListNode creates a new node with the given value.
+
+---
+##### Types
+
+1. [`DoublyLinkedList`](./linkedlist/linked_list.go#L27): No description provided.
+
+2. [`ListNode`](./linkedlist/linked_list.go#L12): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> priorityqueue </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewBinaryHeap`](./priorityqueue/binary_heap.go#L21):  NewBinaryHeap creates and returns a new empty BinaryHeap.
+
+---
+##### Types
+
+1. [`BinaryHeap`](./priorityqueue/binary_heap.go#L15): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> queue </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewQueue`](./queue/queue.go#L20):  NewQueue creates and returns a new queue with an initial capacity of 16. Time Complexity: O(1)
+
+---
+##### Types
+
+1. [`Queue`](./queue/queue.go#L12): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> set </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewUnorderedSet`](./set/unordered_set.go#L13):  NewUnorderedSet creates and returns a new instance of UnorderedSet.
+
+---
+##### Types
+
+1. [`UnorderedSet`](./set/unordered_set.go#L7): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> stack </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewStack`](./stack/stack.go#L17):  NewStack initializes a new stack with default capacity of 16.
+
+---
+##### Types
+
+1. [`Stack`](./stack/stack.go#L10): No description provided.
+
+
+---
+</details><details>
+	<summary> <strong> trie </strong> </summary>	
+
+---
+
+##### Functions:
+
+1. [`NewTrie`](./trie/trie.go#L31):  NewTrie creates and returns an empty Trie.
+2. [`NewTrieNode`](./trie/trie.go#L18):  NewTrieNode creates and returns a new Trie node.
+
+---
+##### Types
+
+1. [`Node`](./trie/trie.go#L12): No description provided.
+
+2. [`Pair`](./trie/trie.go#L173): No description provided.
+
+3. [`Trie`](./trie/trie.go#L24): No description provided.
+
+
+---
+</details>
