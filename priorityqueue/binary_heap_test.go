@@ -5,7 +5,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/Zubayear/sonic/priorityqueue"
+	"github.com/Zubayear/ryushin/priorityqueue"
 )
 
 func TestBinaryHeapOperations(t *testing.T) {

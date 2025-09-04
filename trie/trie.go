@@ -3,7 +3,7 @@ package trie
 import (
 	"sync"
 
-	"github.com/Zubayear/sonic/stack"
+	"github.com/Zubayear/ryushin/stack"
 )
 
 // Node represents a single node in the Trie.

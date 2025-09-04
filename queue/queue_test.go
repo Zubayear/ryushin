@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Zubayear/sonic/queue"
+	"github.com/Zubayear/ryushin/queue"
 )
 
 func TestQueueOperations(t *testing.T) {

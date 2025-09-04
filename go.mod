@@ -1,4 +1,4 @@
-module github.com/Zubayear/sonic
+module github.com/Zubayear/ryushin
 
 go 1.24.0
 

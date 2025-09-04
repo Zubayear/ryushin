@@ -35,7 +35,7 @@ coverage:
 	@echo "Running tests with coverage..."
 	$(GO) test -coverprofile=coverage.out $(PKG)
 	$(GO) tool cover -html=coverage.out -o coverage.html
-	@echo "✅ Coverage report: coverage.html"
+	@echo "Coverage report: coverage.html"
 
 # Run benchmarks
 bench:
@@ -46,7 +46,7 @@ bench:
 # Profiled benchmarks (single package only)
 bench-profile:
 	@if [ "$(PKG)" = "./..." ]; then \
-		echo "❌ Error: Cannot use bench-profile with multiple packages (./...). Set PKG to a single package (e.g., ./treemap)"; \
+		echo "Error: Cannot use bench-profile with multiple packages (./...). Set PKG to a single package (e.g., ./treemap)"; \
 		exit 1; \
 	fi
 	@echo "Running profiled benchmarks:"
@@ -56,8 +56,8 @@ bench-profile:
 	$(GO) test -run $(RUN) -bench '$(BENCH)' $(MEM) -benchtime=$(TIME) $(ITER) \
 	-count=$(COUNT) -cpuprofile $(CPU_PROFILE) -memprofile $(MEM_PROFILE) \
 	-cpu $(CPU) -tags '$(TAGS)' -timeout $(TIMEOUT) $(EXTRA) $(PKG)
-	@echo "✅ CPU profile saved to $(CPU_PROFILE)"
-	@echo "✅ Memory profile saved to $(MEM_PROFILE)"
+	@echo "CPU profile saved to $(CPU_PROFILE)"
+	@echo "Memory profile saved to $(MEM_PROFILE)"
 
 # Profile all packages (each gets separate files)
 bench-all-profiles:
@@ -84,7 +84,7 @@ fmt:
 # Lint code (requires golangci-lint)
 lint:
 	@if ! command -v golangci-lint >/dev/null 2>&1; then \
-		echo "❌ golangci-lint not installed. Install: https://golangci-lint.run/usage/install/"; \
+		echo "golangci-lint not installed. Install: https://golangci-lint.run/usage/install/"; \
 		exit 1; \
 	fi
 	@echo "Running linter..."
@@ -95,7 +95,7 @@ clean:
 	@echo "Cleaning generated files..."
 	@rm -f $(CPU_PROFILE) $(MEM_PROFILE) coverage.out coverage.html *.test
 	@rm -f *_cpu.out *_mem.out
-	@echo "✅ Clean complete."
+	@echo "Clean complete."
 
 # Help
 help:

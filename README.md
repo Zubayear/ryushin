@@ -6,7 +6,7 @@
 [![Build Status](https://github.com/Zubayear/sonic/actions/workflows/go.yml/badge.svg)](https://github.com/Zubayear/sonic/actions)
 [![codecov](https://codecov.io/gh/Zubayear/sonic/branch/main/graph/badge.svg)](https://codecov.io/gh/Zubayear/sonic)
 
-*Sonic* is a **robust**, **high-performance**, and **concurrency-safe** data structures library written in pure Go.
+*Ryushin* is a **robust**, **high-performance**, and **concurrency-safe** data structures library written in pure Go.
 
 It is designed to help Go developers stop reinventing the wheel by providing production-ready collections with clean APIs and built-in thread-safety.
 
@@ -51,7 +51,7 @@ package main
 
 import (
     "fmt"
-    "github.com/Zubayear/sonic"
+    "github.com/Zubayear/ryushin"
 )
 
 func main() {
@@ -70,7 +70,7 @@ func main() {
 ## 💪 Benchmark
 ```
 cpu: 12th Gen Intel(R) Core(TM) i7-1255U
-pkg: github.com/Zubayear/sonic/linkedlist
+pkg: github.com/Zubayear/ryushin/linkedlist
 BenchmarkBinaryHeapAdd-12              	      46	  22188485 ns/op	 8923515 B/op	      28 allocs/op
 BenchmarkBinaryHeapPeek-12             	42151258	        27.76 ns/op	       0 B/op	       0 allocs/op
 BenchmarkBinaryHeapPoll-12             	      16	  67635712 ns/op	 8923558 B/op	      29 allocs/op
@@ -80,7 +80,7 @@ BenchmarkBinaryHeapPeekParallel-12     	 7108928	       161.0 ns/op	       0 B/o
 BenchmarkBinaryHeapPollParallel-12     	      46	  24318991 ns/op	 8923681 B/op	      29 allocs/op
 BenchmarkBinaryHeapClearParallel-12    	 5849760	       184.9 ns/op	       0 B/op	       0 allocs/op
 
-pkg: github.com/Zubayear/sonic/priorityqueue
+pkg: github.com/Zubayear/ryushin/priorityqueue
 BenchmarkBinaryHeapAdd-12              	      72	  15216388 ns/op	 8923576 B/op	      28 allocs/op
 BenchmarkBinaryHeapPeek-12             	52717822	        23.97 ns/op	       0 B/op	       0 allocs/op
 BenchmarkBinaryHeapPoll-12             	      19	  59121358 ns/op	 8923823 B/op	      29 allocs/op
@@ -90,7 +90,7 @@ BenchmarkBinaryHeapPeekParallel-12     	 6294998	       181.1 ns/op	       0 B/o
 BenchmarkBinaryHeapPollParallel-12     	      50	  28703796 ns/op	 8923574 B/op	      29 allocs/op
 BenchmarkBinaryHeapClearParallel-12    	 8554953	       134.8 ns/op	       0 B/op	       0 allocs/op
 
-pkg: github.com/Zubayear/sonic/queue
+pkg: github.com/Zubayear/ryushin/queue
 BenchmarkEnqueue-12            	    2134	    524674 ns/op	  261888 B/op	      10 allocs/op
 BenchmarkDequeue-12            	    1317	    868599 ns/op	       0 B/op	       0 allocs/op
 BenchmarkPeek-12               	50060071	        23.65 ns/op	       0 B/op	       0 allocs/op
@@ -100,7 +100,7 @@ BenchmarkDequeueParallel-12    	 6286309	       172.0 ns/op	      15 B/op	      
 BenchmarkPeekParallel-12       	 9191943	       132.0 ns/op	       0 B/op	       0 allocs/op
 BenchmarkEnqueueLarge-12       	     235	   5153847 ns/op	 2097104 B/op	      15 allocs/op
 
-pkg: github.com/Zubayear/sonic/stack
+pkg: github.com/Zubayear/ryushin/stack
 BenchmarkStackPush-12            	    2152	    540537 ns/op	  249475 B/op	       0 allocs/op
 BenchmarkStackPop-12             	    1896	    668498 ns/op	  159918 B/op	    9994 allocs/op
 BenchmarkStackPeek-12            	46704237	        25.15 ns/op	       0 B/op	       0 allocs/op
@@ -109,7 +109,7 @@ BenchmarkStackPopParallel-12     	 6172747	       173.1 ns/op	      15 B/op	    
 BenchmarkStackPeekParallel-12    	 7440540	       161.2 ns/op	       0 B/op	       0 allocs/op
 BenchmarkStackPushLarge-12       	     228	   5278262 ns/op	 2354695 B/op	       0 allocs/op
 
-pkg: github.com/Zubayear/sonic/trie
+pkg: github.com/Zubayear/ryushin/trie
 BenchmarkTrieInsert-12                        	   86865	     14524 ns/op
 BenchmarkTrieSearch-12                        	 8947917	       139.2 ns/op
 BenchmarkTrieStartsWith-12                    	27064534	        44.18 ns/op
@@ -126,7 +126,7 @@ BenchmarkTrieMapPrefixSearchParallel-12       	22304251	        49.68 ns/op
 
 ## 📦 Installation
 ```
-go get github.com/Zubayear/sonic
+go get github.com/Zubayear/ryushin
 ```
 ---
 ## 🤝 Contributing
@@ -135,355 +135,3 @@ We welcome contributions! Whether you want to:
 - Add new data structures
 - Improve documentation
 - Write benchmarks or tests
-
-# Packages:
-
-<details>
-	<summary> <strong> linkedlist </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewLinkedList`](./linkedlist/linked_list.go#L34):  NewLinkedList initializes and returns a new empty doubly linked list.
-2. [`NewListNode`](./linkedlist/linked_list.go#L18):  NewListNode creates a new node with the given value.
-
----
-##### Types
-
-1. [`DoublyLinkedList`](./linkedlist/linked_list.go#L27): No description provided.
-
-2. [`ListNode`](./linkedlist/linked_list.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> priorityqueue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewBinaryHeap`](./priorityqueue/binary_heap.go#L21):  NewBinaryHeap creates and returns a new empty BinaryHeap.
-
----
-##### Types
-
-1. [`BinaryHeap`](./priorityqueue/binary_heap.go#L15): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> queue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewQueue`](./queue/queue.go#L20):  NewQueue creates and returns a new queue with an initial capacity of 16. Time Complexity: O(1)
-
----
-##### Types
-
-1. [`Queue`](./queue/queue.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> set </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewUnorderedSet`](./set/unordered_set.go#L13):  NewUnorderedSet creates and returns a new instance of UnorderedSet.
-
----
-##### Types
-
-1. [`UnorderedSet`](./set/unordered_set.go#L7): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> stack </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewStack`](./stack/stack.go#L17):  NewStack initializes a new stack with default capacity of 16.
-
----
-##### Types
-
-1. [`Stack`](./stack/stack.go#L10): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> trie </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewTrie`](./trie/trie.go#L31):  NewTrie creates and returns an empty Trie.
-2. [`NewTrieNode`](./trie/trie.go#L18):  NewTrieNode creates and returns a new Trie node.
-
----
-##### Types
-
-1. [`Node`](./trie/trie.go#L12): No description provided.
-
-2. [`Pair`](./trie/trie.go#L173): No description provided.
-
-3. [`Trie`](./trie/trie.go#L24): No description provided.
-
-
----
-</details>
-# Packages:
-
-<details>
-	<summary> <strong> deque </strong> </summary>	
-
----
-
-#####  Package deque provides a generic double-ended queue (deque) implementation. A Deque allows insertion and removal at both the front and the back in O(1) time.
-
----
-##### Types
-
-1. [`Deque`](./deque/deque.go#L10): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> linkedlist </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewLinkedList`](./linkedlist/linked_list.go#L34):  NewLinkedList initializes and returns a new empty doubly linked list.
-2. [`NewListNode`](./linkedlist/linked_list.go#L18):  NewListNode creates a new node with the given value.
-
----
-##### Types
-
-1. [`DoublyLinkedList`](./linkedlist/linked_list.go#L27): No description provided.
-
-2. [`ListNode`](./linkedlist/linked_list.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> priorityqueue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewBinaryHeap`](./priorityqueue/binary_heap.go#L21):  NewBinaryHeap creates and returns a new empty BinaryHeap.
-
----
-##### Types
-
-1. [`BinaryHeap`](./priorityqueue/binary_heap.go#L15): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> queue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewQueue`](./queue/queue.go#L20):  NewQueue creates and returns a new queue with an initial capacity of 16. Time Complexity: O(1)
-
----
-##### Types
-
-1. [`Queue`](./queue/queue.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> set </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewUnorderedSet`](./set/unordered_set.go#L13):  NewUnorderedSet creates and returns a new instance of UnorderedSet.
-
----
-##### Types
-
-1. [`UnorderedSet`](./set/unordered_set.go#L7): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> stack </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewStack`](./stack/stack.go#L17):  NewStack initializes a new stack with default capacity of 16.
-
----
-##### Types
-
-1. [`Stack`](./stack/stack.go#L10): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> trie </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewTrie`](./trie/trie.go#L31):  NewTrie creates and returns an empty Trie.
-2. [`NewTrieNode`](./trie/trie.go#L18):  NewTrieNode creates and returns a new Trie node.
-
----
-##### Types
-
-1. [`Node`](./trie/trie.go#L12): No description provided.
-
-2. [`Pair`](./trie/trie.go#L173): No description provided.
-
-3. [`Trie`](./trie/trie.go#L24): No description provided.
-
-
----
-</details>
-# Packages:
-
-<details>
-	<summary> <strong> deque </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewDeque`](./deque/deque.go#L16):  NewDeque returns a new, empty Deque[T] backed by a doubly linked list. The returned deque is ready to use immediately. Time Complexity: O(1) Concurrency: Safe for concurrent use by multiple goroutines.
-
----
-##### Types
-
-1. [`Deque`](./deque/deque.go#L8): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> linkedlist </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewLinkedList`](./linkedlist/linked_list.go#L34):  NewLinkedList initializes and returns a new empty doubly linked list.
-2. [`NewListNode`](./linkedlist/linked_list.go#L18):  NewListNode creates a new node with the given value.
-
----
-##### Types
-
-1. [`DoublyLinkedList`](./linkedlist/linked_list.go#L27): No description provided.
-
-2. [`ListNode`](./linkedlist/linked_list.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> priorityqueue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewBinaryHeap`](./priorityqueue/binary_heap.go#L21):  NewBinaryHeap creates and returns a new empty BinaryHeap.
-
----
-##### Types
-
-1. [`BinaryHeap`](./priorityqueue/binary_heap.go#L15): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> queue </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewQueue`](./queue/queue.go#L20):  NewQueue creates and returns a new queue with an initial capacity of 16. Time Complexity: O(1)
-
----
-##### Types
-
-1. [`Queue`](./queue/queue.go#L12): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> set </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewUnorderedSet`](./set/unordered_set.go#L13):  NewUnorderedSet creates and returns a new instance of UnorderedSet.
-
----
-##### Types
-
-1. [`UnorderedSet`](./set/unordered_set.go#L7): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> stack </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewStack`](./stack/stack.go#L17):  NewStack initializes a new stack with default capacity of 16.
-
----
-##### Types
-
-1. [`Stack`](./stack/stack.go#L10): No description provided.
-
-
----
-</details><details>
-	<summary> <strong> trie </strong> </summary>	
-
----
-
-##### Functions:
-
-1. [`NewTrie`](./trie/trie.go#L31):  NewTrie creates and returns an empty Trie.
-2. [`NewTrieNode`](./trie/trie.go#L18):  NewTrieNode creates and returns a new Trie node.
-
----
-##### Types
-
-1. [`Node`](./trie/trie.go#L12): No description provided.
-
-2. [`Pair`](./trie/trie.go#L173): No description provided.
-
-3. [`Trie`](./trie/trie.go#L24): No description provided.
-
-
----
-</details>

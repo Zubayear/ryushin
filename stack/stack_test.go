@@ -1,13 +1,11 @@
-package stack_test
+package stack
 
 import (
 	"testing"
-
-	"github.com/Zubayear/sonic/stack"
 )
 
 func TestStackBasicOperations(t *testing.T) {
-	s := stack.NewStack[int]()
+	s := NewStack[int]()
 
 	if !s.IsEmpty() {
 		t.Errorf("Expected stack to be empty")

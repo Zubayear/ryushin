@@ -1,6 +1,6 @@
 package deque
 
-import "github.com/Zubayear/sonic/linkedlist"
+import "github.com/Zubayear/ryushin/linkedlist"
 
 // Deque is a generic double-ended queue backed by a doubly linked structure.
 // It supports adding, removing, and peeking elements from both ends in O(1) time.
