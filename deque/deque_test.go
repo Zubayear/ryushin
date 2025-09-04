@@ -188,7 +188,7 @@ func TestRemoveExistingAndNonExisting(t *testing.T) {
 // TestErrorsOnEmptyAfterDrains ensures error paths after draining the deque.
 func TestErrorsOnEmptyAfterDrains(t *testing.T) {
 	d := NewDeque[int]()
-  
+
 	_, _ = d.OfferFirst(10)
 	_, _ = d.OfferLast(20)
 	_, _ = d.PollFirst()
