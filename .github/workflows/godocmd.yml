@@ -28,9 +28,10 @@ jobs:
           godocmd -r -module ./ -w
       - name: Commit changes if README.md is different
         run: |
-          if [[ `git status --porcelain` ]]; then
-            git commit -am "Updated Documentation in README.md"
+          git add README.md
+          if ! git diff --cached --quiet; then
+            git commit -m "Update README.md"
             git push
           else
-            echo "NO CHANGES DETECTED"
+            echo "No changes to README.md"
           fi
