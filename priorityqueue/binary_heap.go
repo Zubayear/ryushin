@@ -1,3 +1,31 @@
+/*
+Package priorityqueue provides a generic, thread-safe binary max-heap(default) implementation in Go.
+
+A BinaryHeap is a priority queue where the smallest element is always at the root.
+It supports insertion, retrieval of the minimum element, and removal while maintaining
+the heap property.
+
+The type parameter T must satisfy constraints.Ordered (supports <, > operators).
+
+Concurrency:
+  - All operations are protected by a read-write mutex and safe for concurrent access.
+
+Key Features:
+  - Add: Insert a new element while maintaining the heap property (O(log n)).
+  - Peek: Retrieve the smallest element without removing it (O(1)).
+  - Poll: Remove and return the smallest element, re-heapifying the structure (O(log n)).
+  - IsEmpty: Check if the heap is empty (O(1)).
+  - Size: Return the number of elements in the heap (O(1)).
+  - Clear: Remove all elements from the heap (O(1)).
+
+Algorithm Notes:
+  - Binary Heap is stored in a slice.
+  - Parent and child relationships:
+    parent index = (k-1)/2
+    left child = 2*k + 1, right child = 2*k + 2
+  - Swim operation: Moves a newly added element up until the heap property is restored.
+  - RemoveAt operation: Replaces the removed element with the last element, then sinks it down.
+*/
 package priorityqueue
 
 import (
@@ -39,15 +67,15 @@ type BinaryHeap[T any] struct {
 
 // NewBinaryHeap creates a new BinaryHeap instance using the natural ordering of T.
 //
-// By default, this creates a **max-heap**, where the element with the largest value
+// By default, this creates a `max-heap`, where the element with the largest value
 // is at the root. It uses the built-in comparison operators of T (constraints.Ordered).
 //
 // Notes:
 //   - For numeric types (int, float, etc.), the largest value will have the highest priority.
 //   - For strings, lexicographically larger strings will have higher priority.
 //   - For min-heap behavior, you can either:
-//     1. Provide negative values for numeric types, or
-//     2. Use NewBinaryHeapWithComparator with a custom comparator.
+//   - Provide negative values for numeric types, or
+//   - Use NewBinaryHeapWithComparator with a custom comparator.
 //
 // Example usage:
 //

@@ -35,9 +35,9 @@ func TestQueueOperations(t *testing.T) {
 	if isFull {
 		t.Errorf("Expected %v, got %v\n", false, isFull)
 	}
-	result := q.Print()
+	result := q.ToString()
 	if !reflect.DeepEqual(result, "[4, 79]") {
-		t.Errorf("Print() = %v; want %v", result, "[4, 79]")
+		t.Errorf("ToString() = %v; want %v", result, "[4, 79]")
 	}
 
 	q.Clear()

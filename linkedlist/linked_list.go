@@ -1,3 +1,43 @@
+/*
+Package linkedlist provides a generic, concurrency-safe doubly linked list
+(also known as a doubly linked chain) implementation in Go.
+
+It supports:
+  - Efficient insertion and removal at both head and tail (O(1)).
+  - Arbitrary index-based insertions and deletions (O(n)).
+  - Searching, iteration, and element containment checks.
+  - Thread-safe operations using sync.RWMutex.
+
+The list consists of ListNode elements, each containing a value and pointers
+to the previous and next nodes.
+
+Key Features:
+  - AddFirst / AddLast: Insert elements at the head or tail.
+  - AddAt: Insert element at a specific index.
+  - RemoveFirst / RemoveLast: Remove elements from head or tail.
+  - Remove / RemoveAt: Remove by value or index.
+  - PeekFirst / PeekLast: Read values at head/tail without removal.
+  - Iterate: Channel-based iterator for easy traversal.
+  - Contains / indexOf: Check if an element exists or get its index.
+  - Clear: Reset the list.
+
+Concurrency:
+  - All public methods are protected with RWMutex for safe concurrent access.
+
+Algorithms:
+  - Insertion at head/tail: Create a new ListNode and adjust prev/next pointers.
+  - Deletion by value or index: Traverse list to locate node, then relink
+    neighbors to exclude the node.
+  - Iteration: Channel-based iteration reads nodes sequentially under read lock.
+
+Time Complexities:
+  - AddFirst / AddLast: O(1)
+  - RemoveFirst / RemoveLast: O(1)
+  - AddAt / RemoveAt / Remove by value: O(n)
+  - PeekFirst / PeekLast: O(1)
+  - Contains / indexOf: O(n)
+  - Iterate: O(n)
+*/
 package linkedlist
 
 import (
@@ -35,7 +75,10 @@ func NewLinkedList[T comparable]() *DoublyLinkedList[T] {
 	return &DoublyLinkedList[T]{size: 0}
 }
 
-// Clear removes all elements from the list, resetting it to empty.
+// Clear removes all elements from the list and resets it to an empty state.
+// Algorithm: Traverse each node, disconnecting prev and next references.
+//
+// Time Complexity: O(n)
 func (dl *DoublyLinkedList[T]) Clear() {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
@@ -70,7 +113,10 @@ func (dl *DoublyLinkedList[T]) Add(elem T) (bool, error) {
 	return dl.AddLast(elem)
 }
 
-// AddLast appends a new element at the tail of the list. O(1)
+// AddLast inserts an element at the tail of the list.
+// Algorithm: Create new node, link previous tail to it, update a tail pointer.
+//
+// Time Complexity: O(1)
 func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
@@ -104,7 +150,10 @@ func (dl *DoublyLinkedList[T]) AddFirst(elem T) (bool, error) {
 	return true, nil
 }
 
-// AddAt inserts an element at a specific index in the list. O(n)
+// AddAt inserts an element at a specific index in the list.
+// Algorithm: Traverse to index, link a new node between prev and next nodes.
+//
+// Time Complexity: O(n)
 func (dl *DoublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
 	if idx < 0 || idx > dl.size {
 		return false, errors.New("invalid index")
@@ -149,7 +198,10 @@ func (dl *DoublyLinkedList[T]) PeekLast() (T, error) {
 	return dl.tail.val, nil
 }
 
-// RemoveFirst removes and returns the first element. O(1)
+// RemoveFirst deletes and returns the first element.
+// Algorithm: Update head pointer, disconnect removed node.
+//
+// Time Complexity: O(1)
 func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
@@ -187,6 +239,7 @@ func (dl *DoublyLinkedList[T]) RemoveLast() (T, error) {
 	return value, nil
 }
 
+// removeNode deletes a given node from the list and relink neighbors. O(1)
 func (dl *DoublyLinkedList[T]) removeNode(node *ListNode[T]) (T, error) {
 	if node.prev == nil {
 		return dl.RemoveFirst()
