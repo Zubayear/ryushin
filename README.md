@@ -1,10 +1,12 @@
 # 📦 Go Data Structures Library
-
+[![Gitpod](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod&style=flat-square)](https://gitpod.io/#https://github.com/Zubayear/ryushin)
 [![Go Reference](https://pkg.go.dev/badge/github.com/Zubayear/ryushin.svg)](https://pkg.go.dev/github.com/Zubayear/ryushin)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zubayear/ryushin)](https://goreportcard.com/report/github.com/Zubayear/ryushin)
+[![Continuous Integration](https://github.com/Zubayear/ryushin/actions/workflows/ci.yml/badge.svg)](https://github.com/Zubayear/ryushin/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Build Status](https://github.com/Zubayear/ryushin/actions/workflows/go.yml/badge.svg)](https://github.com/Zubayear/ryushin/actions)
 [![codecov](https://codecov.io/gh/Zubayear/ryushin/branch/main/graph/badge.svg)](https://codecov.io/gh/Zubayear/ryushin)
+![](https://img.shields.io/github/repo-size/Zubayear/ryushin.svg?label=Repo%20size&style=flat-square)&nbsp;
+![GitHub Release](https://img.shields.io/github/v/release/Zubayear/ryushin)
 
 *Ryushin* is a **robust**, **high-performance**, and **concurrency-safe** data structures library written in pure Go.
 
