@@ -466,3 +466,11 @@ func TestBinaryHeapConcurrencyIssue(t *testing.T) {
 
 	wg.Wait()
 }
+
+func TestBinaryHeapRemoveInEmptyHeap(t *testing.T) {
+	bh := NewBinaryHeap[int]()
+	_, err := bh.removeAt(1)
+	if errors.Is(err, errors.New("heap empty")) {
+		t.Errorf("Expected heap empty error")
+	}
+}
