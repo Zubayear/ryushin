@@ -1,11 +1,12 @@
 package set
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestUnorderedSet_Clear(t *testing.T) {
-	set := NewUnorderedSet()
+	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
 	set.Insert("apple")
@@ -28,7 +29,7 @@ func TestUnorderedSet_Clear(t *testing.T) {
 }
 
 func TestUnorderedSet_Insert(t *testing.T) {
-	set := NewUnorderedSet()
+	set := NewUnorderedSet[string]()
 	set.Insert("How")
 	set.Insert("Are")
 	set.Insert("How")
@@ -51,7 +52,7 @@ func TestUnorderedSet_Insert(t *testing.T) {
 }
 
 func TestUnorderedSet_Items(t *testing.T) {
-	set := NewUnorderedSet()
+	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
 	set.Insert("apple")
@@ -83,7 +84,7 @@ func TestUnorderedSet_Items(t *testing.T) {
 }
 
 func TestUnorderedSet_Remove(t *testing.T) {
-	set := NewUnorderedSet()
+	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
 	set.Insert("apple")
@@ -98,8 +99,19 @@ func TestUnorderedSet_Remove(t *testing.T) {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 2, set.Size())
 	}
 
-	// Check if removed element is no longer present in the set
+	// Check if a removed element is no longer present in the set
 	if set.Contain("banana") {
 		t.Error("Element 'banana' still found in the set after removal")
+	}
+}
+
+func TestUnorderedSet_Iter(t *testing.T) {
+	set := NewUnorderedSet[string]()
+	set.Insert("Franz Kafka")
+	set.Insert("Fyodor Dostoevsky")
+	set.Insert("Leo Tolstoy")
+	set.Insert("Friedrich Nietzsche")
+	for r := range set.Iter() {
+		fmt.Println(r)
 	}
 }
