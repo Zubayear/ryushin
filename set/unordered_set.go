@@ -21,23 +21,23 @@ import "sync"
 
 // UnorderedSet represents a generic unordered set data structure.
 // It stores unique elements and ensures thread-safe operations.
-type UnorderedSet struct {
+type UnorderedSet[T comparable] struct {
 	lockObj sync.RWMutex
-	items   map[any]struct{}
+	items   map[T]struct{}
 }
 
 // NewUnorderedSet creates and returns a new, empty UnorderedSet.
 //
 // Time Complexity: O(1)
-func NewUnorderedSet() *UnorderedSet {
-	return &UnorderedSet{items: make(map[any]struct{})}
+func NewUnorderedSet[T comparable]() *UnorderedSet[T] {
+	return &UnorderedSet[T]{items: make(map[T]struct{})}
 }
 
 // Insert adds an element to the set. Duplicate insertions are ignored.
 // Algorithm: Map insertion ensures uniqueness. Lock acquired for thread-safety.
 //
 // Time Complexity: O(1) amortized
-func (us *UnorderedSet) Insert(item any) {
+func (us *UnorderedSet[T]) Insert(item T) {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	us.items[item] = struct{}{}
@@ -47,7 +47,7 @@ func (us *UnorderedSet) Insert(item any) {
 // Algorithm: Map deletion removes the key if present. Lock acquired for thread-safety.
 //
 // Time Complexity: O(1)
-func (us *UnorderedSet) Remove(item any) {
+func (us *UnorderedSet[T]) Remove(item T) {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
 	delete(us.items, item)
@@ -58,7 +58,7 @@ func (us *UnorderedSet) Remove(item any) {
 // Algorithm: Map lookup. Lock acquired for reading.
 //
 // Time Complexity: O(1)
-func (us *UnorderedSet) Contain(item any) bool {
+func (us *UnorderedSet[T]) Contain(item T) bool {
 	us.lockObj.RLock()
 	defer us.lockObj.RUnlock()
 	_, ok := us.items[item]
@@ -69,7 +69,7 @@ func (us *UnorderedSet) Contain(item any) bool {
 // Algorithm: Map length retrieval. Lock acquired for reading.
 //
 // Time Complexity: O(1)
-func (us *UnorderedSet) Size() int {
+func (us *UnorderedSet[T]) Size() int {
 	us.lockObj.RLock()
 	defer us.lockObj.RUnlock()
 	return len(us.items)
@@ -79,10 +79,10 @@ func (us *UnorderedSet) Size() int {
 // Algorithm: Reinitialize the internal map. Lock acquired for writing.
 //
 // Time Complexity: O(1)
-func (us *UnorderedSet) Clear() {
+func (us *UnorderedSet[T]) Clear() {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
-	us.items = make(map[any]struct{})
+	us.items = make(map[T]struct{})
 }
 
 // Items return a slice containing all elements in the set.
@@ -90,12 +90,35 @@ func (us *UnorderedSet) Clear() {
 // Algorithm: Iterate over the map keys and append to a slice. Lock acquired for writing.
 //
 // Time Complexity: O(n), where n = number of elements in the set
-func (us *UnorderedSet) Items() []any {
+func (us *UnorderedSet[T]) Items() []T {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
-	elements := make([]any, 0, len(us.items))
+	elements := make([]T, 0, len(us.items))
 	for element := range us.items {
 		elements = append(elements, element)
 	}
 	return elements
+}
+
+// Iter returns a channel that streams elements of the set.
+// It captures a snapshot at the time of the call, so later modifications
+// to the set will not affect the iteration.
+func (us *UnorderedSet[T]) Iter() <-chan T {
+	ch := make(chan T)
+
+	go func() {
+		us.lockObj.RLock()
+		items := make([]T, 0, len(us.items))
+		for item := range us.items {
+			items = append(items, item)
+		}
+		us.lockObj.RUnlock()
+
+		for _, item := range items {
+			ch <- item
+		}
+		close(ch)
+	}()
+
+	return ch
 }
