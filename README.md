@@ -7,6 +7,8 @@
 [![codecov](https://codecov.io/gh/Zubayear/ryushin/branch/main/graph/badge.svg)](https://codecov.io/gh/Zubayear/ryushin)
 ![](https://img.shields.io/github/repo-size/Zubayear/ryushin.svg?label=Repo%20size&style=flat-square)&nbsp;
 ![GitHub Release](https://img.shields.io/github/v/release/Zubayear/ryushin)
+[![Security Policy](https://img.shields.io/badge/security-policy-blue.svg)](./SECURITY.md)
+[![Contributing](https://img.shields.io/badge/contributing-guide-brightgreen.svg)](./CONTRIBUTING.md)
 
 *Ryushin* is a **robust**, **high-performance**, and **concurrency-safe** data structures library written in pure Go.
 
