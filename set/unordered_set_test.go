@@ -9,9 +9,9 @@ func TestUnorderedSet_Clear(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
-	set.Insert("apple")
-	set.Insert("banana")
-	set.Insert("cherry")
+	_ = set.Insert("apple")
+	_ = set.Insert("banana")
+	_ = set.Insert("cherry")
 
 	// Clear the set
 	set.Clear()
@@ -30,10 +30,15 @@ func TestUnorderedSet_Clear(t *testing.T) {
 
 func TestUnorderedSet_Insert(t *testing.T) {
 	set := NewUnorderedSet[string]()
-	set.Insert("How")
-	set.Insert("Are")
-	set.Insert("How")
-	set.Insert("You")
+	_ = set.Insert("How")
+	_ = set.Insert("Are")
+	_ = set.Insert("How")
+	_ = set.Insert("You")
+
+	notOk := set.Insert("You")
+	if notOk {
+		t.Errorf("Expected false got %v\n", notOk)
+	}
 
 	if set.Size() != 3 {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 3, set.Size())
@@ -55,9 +60,9 @@ func TestUnorderedSet_Items(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
-	set.Insert("apple")
-	set.Insert("banana")
-	set.Insert("cherry")
+	_ = set.Insert("apple")
+	_ = set.Insert("banana")
+	_ = set.Insert("cherry")
 
 	// Get the elements from the set
 	elements := set.Items()
@@ -68,7 +73,7 @@ func TestUnorderedSet_Items(t *testing.T) {
 	}
 
 	// Check if all expected elements are present
-	expectedElements := []any{"apple", "banana", "cherry"}
+	expectedElements := []string{"apple", "banana", "cherry"}
 	for _, element := range expectedElements {
 		found := false
 		for _, e := range elements {
@@ -87,13 +92,20 @@ func TestUnorderedSet_Remove(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
 	// Add elements to the set
-	set.Insert("apple")
-	set.Insert("banana")
-	set.Insert("cherry")
+	_ = set.Insert("apple")
+	_ = set.Insert("banana")
+	_ = set.Insert("cherry")
 
 	// Remove an element from the set
-	set.Remove("banana")
+	ok := set.Remove("banana")
+	if !ok {
+		t.Errorf("Expected true, Got %v\n", ok)
+	}
 
+	notOk := set.Remove("king")
+	if notOk {
+		t.Errorf("Expected false, Got %v\n", notOk)
+	}
 	// Check the size of the set
 	if set.Size() != 2 {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 2, set.Size())

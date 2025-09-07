@@ -23,34 +23,42 @@ import "sync"
 // It stores unique elements and ensures thread-safe operations.
 type UnorderedSet[T comparable] struct {
 	lockObj sync.RWMutex
-	items   map[T]struct{}
+	items   map[T]bool
 }
 
 // NewUnorderedSet creates and returns a new, empty UnorderedSet.
 //
 // Time Complexity: O(1)
 func NewUnorderedSet[T comparable]() *UnorderedSet[T] {
-	return &UnorderedSet[T]{items: make(map[T]struct{})}
+	return &UnorderedSet[T]{items: make(map[T]bool)}
 }
 
-// Insert adds an element to the set. Duplicate insertions are ignored.
+// Insert adds an element to the set. If an element is added, it returns true otherwise return false
 // Algorithm: Map insertion ensures uniqueness. Lock acquired for thread-safety.
 //
 // Time Complexity: O(1) amortized
-func (us *UnorderedSet[T]) Insert(item T) {
+func (us *UnorderedSet[T]) Insert(item T) bool {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
-	us.items[item] = struct{}{}
+	if _, exist := us.items[item]; !exist {
+		us.items[item] = true
+		return true
+	}
+	return false
 }
 
 // Remove deletes an element from the set.
 // Algorithm: Map deletion removes the key if present. Lock acquired for thread-safety.
 //
 // Time Complexity: O(1)
-func (us *UnorderedSet[T]) Remove(item T) {
+func (us *UnorderedSet[T]) Remove(item T) bool {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
+	if _, exist := us.items[item]; !exist {
+		return false
+	}
 	delete(us.items, item)
+	return true
 }
 
 // Contain checks if an element exists in the set.
@@ -82,7 +90,7 @@ func (us *UnorderedSet[T]) Size() int {
 func (us *UnorderedSet[T]) Clear() {
 	us.lockObj.Lock()
 	defer us.lockObj.Unlock()
-	us.items = make(map[T]struct{})
+	us.items = make(map[T]bool)
 }
 
 // Items return a slice containing all elements in the set.

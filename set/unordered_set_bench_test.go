@@ -10,14 +10,14 @@ func BenchmarkUnorderedSet_Insert(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		set.Insert(i)
+		_ = set.Insert(i)
 	}
 }
 
 func BenchmarkUnorderedSet_Contain(b *testing.B) {
 	set := NewUnorderedSet[float32]()
 	for i := 0; i < 10000000; i++ {
-		set.Insert(float32(i))
+		_ = set.Insert(float32(i))
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -29,20 +29,20 @@ func BenchmarkUnorderedSet_Contain(b *testing.B) {
 func BenchmarkUnorderedSet_Remove(b *testing.B) {
 	set := NewUnorderedSet[int]()
 	for i := 0; i < b.N; i++ {
-		set.Insert(i)
+		_ = set.Insert(i)
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		set.Remove(i)
+		_ = set.Remove(i)
 	}
 }
 
 func BenchmarkUnorderedSet_Items(b *testing.B) {
 	set := NewUnorderedSet[int]()
 	for i := 0; i < 100000; i++ {
-		set.Insert(i)
+		_ = set.Insert(i)
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -57,7 +57,7 @@ func BenchmarkUnorderedSet_StringKeys(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		set.Insert(strconv.Itoa(i))
+		_ = set.Insert(strconv.Itoa(i))
 	}
 }
 
@@ -69,7 +69,7 @@ func BenchmarkUnorderedSet_ParallelInsert(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
-			set.Insert(i)
+			_ = set.Insert(i)
 			i++
 		}
 	})
@@ -78,7 +78,7 @@ func BenchmarkUnorderedSet_ParallelInsert(b *testing.B) {
 func BenchmarkUnorderedSet_ParallelContain(b *testing.B) {
 	set := NewUnorderedSet[int]()
 	for i := 0; i < 100000; i++ {
-		set.Insert(i)
+		_ = set.Insert(i)
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -86,7 +86,7 @@ func BenchmarkUnorderedSet_ParallelContain(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
-			set.Contain(i % 100000)
+			_ = set.Contain(i % 100000)
 			i++
 		}
 	})
@@ -95,7 +95,7 @@ func BenchmarkUnorderedSet_ParallelContain(b *testing.B) {
 func BenchmarkUnorderedSet_ParallelRemove(b *testing.B) {
 	set := NewUnorderedSet[int]()
 	for i := 0; i < b.N; i++ {
-		set.Insert(i)
+		_ = set.Insert(i)
 	}
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -103,7 +103,7 @@ func BenchmarkUnorderedSet_ParallelRemove(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		i := 0
 		for pb.Next() {
-			set.Remove(i)
+			_ = set.Remove(i)
 			i++
 		}
 	})
