@@ -6,7 +6,7 @@ We currently provide security updates for the following versions:
 
 | Version   | Supported |
 |-----------|-----------|
-| 0.1.x     | ✅ Yes    |
+| 0.x.0     | ✅ Yes    |
 | < 0.1.0   | ❌ No     |
 
 ---
