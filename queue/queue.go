@@ -182,6 +182,8 @@ func (q *Queue[T]) Size() int {
 	return q.count
 }
 
+// Deprecated: Use ToArray instead. ToArray returns a []T which can be
+// easily converted to string using fmt.Sprint if needed.
 // ToString returns a string representation of the queue elements in FIFO order.
 //
 // Example output:
@@ -217,4 +219,22 @@ func (q *Queue[T]) Clear() {
 	q.rear = 0
 	q.count = 0
 	q.cap = 16
+}
+
+// ToArray returns a array representation of the queue elements in FIFO order.
+//
+// Example output:
+//
+//	[10, 20, 30]
+//
+// Complexity: O(n)
+func (q *Queue[T]) ToArray() []T {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+	var result []T
+	for r := q.front; r <= q.rear-1; r++ {
+		value := q.data[r%q.cap]
+		result = append(result, value)
+	}
+	return result
 }

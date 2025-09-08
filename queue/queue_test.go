@@ -1,14 +1,14 @@
-package queue_test
+package queue
 
 import (
+	"fmt"
 	"reflect"
+	"strings"
 	"testing"
-
-	"github.com/Zubayear/ryushin/queue"
 )
 
 func TestQueueOperations(t *testing.T) {
-	q := queue.NewQueue[int]()
+	q := NewQueue[int]()
 	isEmpty := q.IsEmpty()
 	if !isEmpty {
 		t.Errorf("Expected %v, got %v\n", false, isEmpty)
@@ -58,4 +58,14 @@ func TestQueueOperations(t *testing.T) {
 	for i := 0; i < 50; i++ {
 		q.Enqueue(i)
 	}
+}
+
+func TestQueueToArray(t *testing.T) {
+	q := NewQueue[string]()
+	str := "To be or not to be, that is the question"
+	arr := strings.Split(str, " ")
+	for _, s := range arr {
+		q.Enqueue(s)
+	}
+	fmt.Println(q.ToArray())
 }

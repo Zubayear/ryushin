@@ -31,13 +31,10 @@ This library is designed with:
   - `LinkedList`
   - `Set`
 - Tree structures:
-  - `Binary Search Tree`
-  - `AVL Tree`
-  - `Red-Black Tree`
+  - `TreeMap(Red-Black Tree/AVL Tree)`
   - `Trie`
 - Priority structures:
-  - `Heap` (min & max)
-  - `PriorityQueue`
+  - `PriorityQueue(Binary Heap)` (min & max)
 - Thread-safe variants with `sync.RWMutex`.
 - Custom iterators for all collections.
 
@@ -78,70 +75,83 @@ make bench
 go test -run . -bench '.' -benchmem -benchtime=5s  \
 -count=1 -cpu 12 -tags '' -timeout 10m  ./...
 
-cpu: 12th Gen Intel(R) Core(TM) i7-1255U
 pkg: github.com/Zubayear/ryushin/deque
-BenchmarkOfferFirst-12                  65113488                82.23 ns/op           24 B/op          1 allocs/op
-BenchmarkOfferLast-12                   63029910                83.28 ns/op           24 B/op          1 allocs/op
-BenchmarkPollFirst-12                   140796646               42.88 ns/op            0 B/op          0 allocs/op
-BenchmarkPollLast-12                    138808090               41.84 ns/op            0 B/op          0 allocs/op
-BenchmarkPeekFirst-12                   280668638               21.35 ns/op            0 B/op          0 allocs/op
-BenchmarkPeekLast-12                    278238441               21.47 ns/op            0 B/op          0 allocs/op
-BenchmarkMixed-12                       46330650               116.7 ns/op            24 B/op          1 allocs/op
-BenchmarkOfferParallel-12               30619899               175.5 ns/op            24 B/op          1 allocs/op
-BenchmarkParallelMixed-12               19881282               272.8 ns/op            24 B/op          1 allocs/op
-BenchmarkRemove-12                        206761             28530 ns/op              24 B/op          1 allocs/op
-BenchmarkSizeIsEmpty-12                 139107025               42.90 ns/op            0 B/op          0 allocs/op
-BenchmarkCoordinatedParallel-12         23883600               266.9 ns/op            24 B/op          1 allocs/op
+cpu: 12th Gen Intel(R) Core(TM) i7-1255U
+BenchmarkOfferFirst-12             	47256696	       190.5 ns/op	      24 B/op	       1 allocs/op
+BenchmarkOfferLast-12              	64287664	        92.05 ns/op	      24 B/op	       1 allocs/op
+BenchmarkPollFirst-12              	127510657	        45.53 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPollLast-12               	185325477	        49.17 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPeekFirst-12              	455091012	        13.49 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPeekLast-12               	458355780	        12.73 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMixed-12                  	77434741	        74.48 ns/op	      24 B/op	       1 allocs/op
+BenchmarkOfferParallel-12          	48596216	       129.5 ns/op	      24 B/op	       1 allocs/op
+BenchmarkParallelMixed-12          	28872110	       211.5 ns/op	      24 B/op	       1 allocs/op
+BenchmarkRemove-12                 	  364267	     18197 ns/op	      24 B/op	       1 allocs/op
+BenchmarkSizeIsEmpty-12            	243685191	        25.13 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCoordinatedParallel-12    	32917041	       177.6 ns/op	      24 B/op	       1 allocs/op
 
 pkg: github.com/Zubayear/ryushin/linkedlist
-BenchmarkLinkedListAddLast-12                   63643450                84.31 ns/op           24 B/op          1 allocs/op
-BenchmarkLinkedListAddFirst-12                  66705429                81.71 ns/op           24 B/op          1 allocs/op
-BenchmarkLinkedListRemoveFirst-12               100000000               59.75 ns/op           15 B/op          0 allocs/op
-BenchmarkLinkedListRemoveLast-12                93877467                67.03 ns/op           15 B/op          0 allocs/op
-BenchmarkLinkedListAddLastParallel-12           33084061               171.6 ns/op            24 B/op          1 allocs/op
-BenchmarkLinkedListRemoveFirstParallel-12       43253436               161.9 ns/op            15 B/op          0 allocs/op
+BenchmarkLinkedListAddLast-12                	100000000	        57.73 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListAddFirst-12               	126720588	        53.49 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListRemoveFirst-12            	143900203	        37.39 ns/op	      15 B/op	       0 allocs/op
+BenchmarkLinkedListRemoveLast-12             	156739274	        39.89 ns/op	      15 B/op	       0 allocs/op
+BenchmarkLinkedListAddLastParallel-12        	50725714	       115.9 ns/op	      24 B/op	       1 allocs/op
+BenchmarkLinkedListRemoveFirstParallel-12    	66724568	        97.01 ns/op	      15 B/op	       0 allocs/op
 
 pkg: github.com/Zubayear/ryushin/priorityqueue
-BenchmarkBinaryHeapAdd-12                    465          12803935 ns/op         8923519 B/op         28 allocs/op
-BenchmarkBinaryHeapPeek-12              257329814               22.05 ns/op            0 B/op          0 allocs/op
-BenchmarkBinaryHeapPoll-12                    93          57015260 ns/op         8923552 B/op         29 allocs/op
-BenchmarkBinaryHeapClear-12             159918670               38.79 ns/op            0 B/op          0 allocs/op
-BenchmarkBinaryHeapAddParallel-12            333          18108846 ns/op         8616459 B/op         25 allocs/op
-BenchmarkBinaryHeapPeekParallel-12      100000000              151.2 ns/op             0 B/op          0 allocs/op
-BenchmarkBinaryHeapPollParallel-12           295          19365797 ns/op         8923597 B/op         29 allocs/op
-BenchmarkBinaryHeapClearParallel-12     57560858               115.2 ns/op             0 B/op          0 allocs/op
+BenchmarkBinaryHeapAdd-12                         	     637	   8708605 ns/op	 8923504 B/op	      28 allocs/op
+BenchmarkBinaryHeapPeek-12                        	458584401	        13.30 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapPoll-12                        	     174	  34229119 ns/op	 8923584 B/op	      30 allocs/op
+BenchmarkBinaryHeapClear-12                       	255704010	        22.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapAddParallel-12                 	     434	  12803666 ns/op	 8594236 B/op	      25 allocs/op
+BenchmarkBinaryHeapPeekParallel-12                	87129517	        82.32 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapPollParallel-12                	     490	  11563992 ns/op	 8923586 B/op	      30 allocs/op
+BenchmarkBinaryHeapClearParallel-12               	72046628	        85.17 ns/op	       0 B/op	       0 allocs/op
+BenchmarkBinaryHeapAddWithCustomComparator-12     	   77326	     84117 ns/op	   59432 B/op	      12 allocs/op
+BenchmarkBinaryHeapPollWithCustomComparator-12    	   26112	    228994 ns/op	   59433 B/op	      12 allocs/op
+BenchmarkBinaryHeapSort-12                        	    7824	    689732 ns/op	  491584 B/op	       3 allocs/op
 
 pkg: github.com/Zubayear/ryushin/queue
-BenchmarkEnqueue-12                12412            448842 ns/op          261888 B/op         10 allocs/op
-BenchmarkDequeue-12                 6207            807221 ns/op               0 B/op          0 allocs/op
-BenchmarkPeek-12                264576570               21.79 ns/op            0 B/op          0 allocs/op
-BenchmarkPrint-12                 663604              7726 ns/op            1200 B/op         97 allocs/op
-BenchmarkEnqueueParallel-12     50850387               119.8 ns/op            21 B/op          0 allocs/op
-BenchmarkDequeueParallel-12     38319889               156.3 ns/op            15 B/op          0 allocs/op
-BenchmarkPeekParallel-12        77795079                90.87 ns/op            0 B/op          0 allocs/op
-BenchmarkEnqueueLarge-12            1203           4826167 ns/op         2097105 B/op         15 allocs/op
+BenchmarkEnqueue-12            	   14925	    384116 ns/op	  261888 B/op	      10 allocs/op
+BenchmarkDequeue-12            	   10000	    551869 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPeek-12               	383929602	        15.26 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPrint-12              	  830155	      6211 ns/op	    1200 B/op	      97 allocs/op
+BenchmarkEnqueueParallel-12    	62687997	        91.91 ns/op	      17 B/op	       0 allocs/op
+BenchmarkDequeueParallel-12    	52404309	       126.9 ns/op	      15 B/op	       0 allocs/op
+BenchmarkPeekParallel-12       	100000000	        56.92 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEnqueueLarge-12       	    1614	   4521053 ns/op	 2097105 B/op	      15 allocs/op
+
+pkg: github.com/Zubayear/ryushin/set
+BenchmarkUnorderedSet_Insert-12             	31984255	       201.7 ns/op	      75 B/op	       0 allocs/op
+BenchmarkUnorderedSet_Contain-12            	27392319	       211.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnorderedSet_Remove-12             	45859218	       224.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnorderedSet_Items-12              	    5298	   1148956 ns/op	  802817 B/op	       1 allocs/op
+BenchmarkUnorderedSet_StringKeys-12         	21114708	       393.4 ns/op	      92 B/op	       1 allocs/op
+BenchmarkUnorderedSet_ParallelInsert-12     	62360078	       199.0 ns/op	       4 B/op	       0 allocs/op
+BenchmarkUnorderedSet_ParallelContain-12    	87302314	        71.06 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnorderedSet_ParallelRemove-12     	50900384	       284.2 ns/op	       0 B/op	       0 allocs/op
 
 pkg: github.com/Zubayear/ryushin/stack
-BenchmarkStackPush-12                      10000            511898 ns/op          214749 B/op          0 allocs/op
-BenchmarkStackPop-12                       10120            603000 ns/op          159984 B/op       9999 allocs/op
-BenchmarkStackPeek-12                   274523893               22.38 ns/op            0 B/op          0 allocs/op
-BenchmarkStackPushParallel-12           51585878               115.8 ns/op            20 B/op          0 allocs/op
-BenchmarkStackPopParallel-12            35868969               165.2 ns/op            15 B/op          0 allocs/op
-BenchmarkStackPeekParallel-12           29385316               202.9 ns/op             0 B/op          0 allocs/op
-BenchmarkStackPushLarge-12                  1176           5192140 ns/op         1826091 B/op          0 allocs/op
+BenchmarkStackPush-12            	   18462	    322790 ns/op	  232638 B/op	       0 allocs/op
+BenchmarkStackPop-12             	   14610	    407967 ns/op	  159989 B/op	    9999 allocs/op
+BenchmarkStackPeek-12            	470524170	        14.39 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStackPushParallel-12    	75873013	        73.38 ns/op	      28 B/op	       0 allocs/op
+BenchmarkStackPopParallel-12     	63473793	       102.8 ns/op	      15 B/op	       0 allocs/op
+BenchmarkStackPeekParallel-12    	64488361	        94.18 ns/op	       0 B/op	       0 allocs/op
+BenchmarkStackPushLarge-12       	    1867	   3288300 ns/op	 2300464 B/op	       0 allocs/op
 
 pkg: github.com/Zubayear/ryushin/trie
-BenchmarkTrieInsert-12                            683140              7381 ns/op            7696 B/op        121 allocs/op
-BenchmarkTrieSearch-12                          57652837                93.44 ns/op            0 B/op          0 allocs/op
-BenchmarkTrieStartsWith-12                      164599136               35.48 ns/op            0 B/op          0 allocs/op
-BenchmarkTrieGetWordsWithPrefix-12               4593763              1286 ns/op             205 B/op         13 allocs/op
-BenchmarkTrieInsertParallel-12                  21762350               249.8 ns/op             0 B/op          0 allocs/op
-BenchmarkTrieSearchParallel-12                  30905372               191.9 ns/op             0 B/op          0 allocs/op
-BenchmarkTrieMapPrefixSearch-12                 24322260               244.7 ns/op             0 B/op          0 allocs/op
-BenchmarkTrieInsertLarge-12                          180          35236579 ns/op        11120945 B/op     240015 allocs/op
-BenchmarkTrieStartsWithParallel-12              35996709               188.2 ns/op             0 B/op          0 allocs/op
-BenchmarkTrieGetWordsWithPrefixParallel-12      10666076               546.3 ns/op           205 B/op         13 allocs/op
-BenchmarkTrieMapPrefixSearchParallel-12         135850008               45.26 ns/op            0 B/op          0 allocs/op
+BenchmarkTrieInsert-12                        	 1150882	      5197 ns/op	    7696 B/op	     121 allocs/op
+BenchmarkTrieSearch-12                        	100000000	        57.62 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieStartsWith-12                    	302768622	        20.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieGetWordsWithPrefix-12            	 8320234	       847.3 ns/op	     205 B/op	      13 allocs/op
+BenchmarkTrieInsertParallel-12                	33411962	       178.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieSearchParallel-12                	82843863	        75.20 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieMapPrefixSearch-12               	35491470	       146.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieInsertLarge-12                   	     295	  19556853 ns/op	11120963 B/op	  240015 allocs/op
+BenchmarkTrieStartsWithParallel-12            	88285148	        68.80 ns/op	       0 B/op	       0 allocs/op
+BenchmarkTrieGetWordsWithPrefixParallel-12    	24377301	       281.0 ns/op	     205 B/op	      13 allocs/op
+BenchmarkTrieMapPrefixSearchParallel-12       	211659241	        26.12 ns/op	       0 B/op	       0 allocs/op
 ```
 ---
 
