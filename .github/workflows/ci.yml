@@ -34,6 +34,8 @@ jobs:
   codespell:
     name: Check for spelling
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v5
       - uses: codespell-project/actions-codespell@71286cb40fe09b3222aff820311357b4e67cc206
