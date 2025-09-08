@@ -20,10 +20,7 @@ This library is designed with:
 - **Ease of use** – clean API, well-documented, and consistent.
 - **Production-readiness** – tested and benchmarked.
 
----
-
 ## ✨ Features
-
 - Common collections:
   - `Stack`
   - `Queue`
@@ -38,14 +35,12 @@ This library is designed with:
 - Thread-safe variants with `sync.RWMutex`.
 - Custom iterators for all collections.
 
----
 ## 🚀 Why Ryushin?
 - **Performance-oriented**: Optimized for low allocations and cache-friendly operations
 - **Concurrency-safe**: Multi-goroutine safe implementations
 - **Ease of use**: Idiomatic APIs, consistent design
 - **Production-ready**: Tested, benchmarked, and reliable
 
----
 ## 💡 Quick Example
 ```
 package main
@@ -67,7 +62,6 @@ func main() {
 }
 ```
 
----
 ## 💪 Benchmark
 ```
 make bench
@@ -153,13 +147,12 @@ BenchmarkTrieStartsWithParallel-12            	88285148	        68.80 ns/op	    
 BenchmarkTrieGetWordsWithPrefixParallel-12    	24377301	       281.0 ns/op	     205 B/op	      13 allocs/op
 BenchmarkTrieMapPrefixSearchParallel-12       	211659241	        26.12 ns/op	       0 B/op	       0 allocs/op
 ```
----
 
 ## 📦 Installation
 ```
 go get github.com/Zubayear/ryushin
 ```
----
+
 ## 🤝 Contributing
 We welcome contributions! Whether you want to:
 - Fix bugs
