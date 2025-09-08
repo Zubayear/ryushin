@@ -13,6 +13,10 @@ jobs:
   upload_code_coverage:
     name: Upload code coverage
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      
     steps:
       - uses: actions/checkout@v5
       - name: Set up go
