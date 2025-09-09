@@ -62,9 +62,9 @@ import (
 //	val, _ := q.Dequeue()
 //	fmt.Println(val) // Output: 10
 type Queue[T comparable] struct {
-	front, rear, cap, count int
-	data                    []T
-	mutex                   sync.RWMutex
+	front, rear, cap, count, idx int
+	data                         []T
+	mutex                        sync.RWMutex
 }
 
 // NewQueue creates and returns a new queue with an initial capacity of 16.
@@ -237,4 +237,25 @@ func (q *Queue[T]) ToArray() []T {
 		result = append(result, value)
 	}
 	return result
+}
+
+func (q *Queue[T]) Iterator() *Queue[T] {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// copy snapshot
+	snapshot := make([]T, q.Size())
+	copy(snapshot, q.data)
+
+	return &Queue[T]{data: snapshot, idx: 0}
+}
+
+func (q *Queue[T]) Next() (T, bool) {
+	if q.idx >= len(q.data) {
+		var zero T
+		return zero, false
+	}
+	v := q.data[q.idx]
+	q.idx++
+	return v, true
 }

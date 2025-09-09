@@ -39,7 +39,7 @@ func NewUnorderedSet[T comparable]() *UnorderedSet[T] {
 // Time Complexity: O(1) amortized
 func (us *UnorderedSet[T]) Insert(item T) bool {
 	us.lockObj.Lock()
-	defer us.lockObj.Unlock()
+	defer us.lockObj.Unlock() 
 	if _, exist := us.items[item]; !exist {
 		us.items[item] = true
 		return true

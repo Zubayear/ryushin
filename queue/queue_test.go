@@ -68,4 +68,34 @@ func TestQueueToArray(t *testing.T) {
 		q.Enqueue(s)
 	}
 	fmt.Println(q.ToArray())
+
+	fmt.Println("Iterator: ")
+	it := q.Iterator()
+
+	for v, ok := it.Next(); ok; v, ok = it.Next() {
+		fmt.Print(" ", v)
+	}
+	fmt.Println()
+
+	fmt.Println("Dequeuing Iterator")
+	for v, ok := it.Next(); ok; v, ok = it.Next() {
+		fmt.Print(" ", v)
+		it.Dequeue()
+	}
+
+	fmt.Println("Enqueuing Data")
+	str1 := "There are many people in our country are illiterate"
+	arr1 := strings.Split(str1, " ")
+	for _, s := range arr1 {
+		q.Enqueue(s)
+	}
+
+	fmt.Println("Iterator: ")
+	it1 := q.Iterator()
+
+	for v, ok := it1.Next(); ok; v, ok = it1.Next() {
+		fmt.Print(" ", v)
+	}
+
+	fmt.Println()
 }
