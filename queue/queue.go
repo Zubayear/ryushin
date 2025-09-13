@@ -62,9 +62,9 @@ import (
 //	val, _ := q.Dequeue()
 //	fmt.Println(val) // Output: 10
 type Queue[T comparable] struct {
-	front, rear, cap, count, idx int
-	data                         []T
-	mutex                        sync.RWMutex
+	front, rear, cap, count int
+	data                    []T
+	mutex                   sync.RWMutex
 }
 
 // NewQueue creates and returns a new queue with an initial capacity of 16.
@@ -252,7 +252,7 @@ type Iterator[T comparable] struct {
 
 // Iterator returns a snapshot of the queue elements in FIFO order.
 //
-// Use Next() to iterate values
+// # Use Next() to iterate values
 //
 // Complexity: O(n)
 func (q *Queue[T]) Iterator() *Iterator[T] {
