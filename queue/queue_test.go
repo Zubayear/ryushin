@@ -68,4 +68,23 @@ func TestQueueToArray(t *testing.T) {
 		q.Enqueue(s)
 	}
 	fmt.Println(q.ToArray())
+
+	it := q.Iterator()
+	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
+		fmt.Println(v)
+	}
+}
+
+func TestIterator(t *testing.T) {
+	q := NewQueue[string]()
+	str := "Iterator is fun!!"
+	arr := strings.Split(str, " ")
+	for _, s := range arr {
+		q.Enqueue(s)
+	}
+
+	it := q.Iterator()
+	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
+		fmt.Println(v)
+	}
 }

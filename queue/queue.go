@@ -238,3 +238,47 @@ func (q *Queue[T]) ToArray() []T {
 	}
 	return result
 }
+
+// Iterator represents a type to iterate queue.
+// It is concurrency-safe using sync.RWMutex for read/write operations.
+//
+// Type parameter:
+//
+//	T - The element type, which must be comparable.
+type Iterator[T comparable] struct {
+	idx  int
+	data []T
+}
+
+// Iterator returns a snapshot of the queue elements in FIFO order.
+//
+// # Use Next() to iterate values
+//
+// Complexity: O(n)
+func (q *Queue[T]) Iterator() *Iterator[T] {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
+
+	// copy snapshot
+	snapshot := make([]T, q.Size())
+	copy(snapshot, q.data)
+
+	return &Iterator[T]{data: snapshot, idx: 0}
+}
+
+// Next return queue elements in FIFO order
+//
+// Returns value from queue in FIFO order,
+// If Queue has element returns T type value and
+// bool true if next value exit, otherwise return false
+//
+// Example Return: (T, bool)
+func (q *Iterator[T]) Next() (T, bool) {
+	if q.idx >= len(q.data) {
+		var zero T
+		return zero, false
+	}
+	v := q.data[q.idx]
+	q.idx++
+	return v, true
+}
