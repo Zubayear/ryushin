@@ -69,33 +69,22 @@ func TestQueueToArray(t *testing.T) {
 	}
 	fmt.Println(q.ToArray())
 
-	fmt.Println("Iterator: ")
 	it := q.Iterator()
-
-	for v, ok := it.Next(); ok; v, ok = it.Next() {
-		fmt.Print(" ", v)
+	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
+		fmt.Println(v)
 	}
-	fmt.Println()
+}
 
-	fmt.Println("Dequeuing Iterator")
-	for v, ok := it.Next(); ok; v, ok = it.Next() {
-		fmt.Print(" ", v)
-		it.Dequeue()
-	}
-
-	fmt.Println("Enqueuing Data")
-	str1 := "There are many people in our country are illiterate"
-	arr1 := strings.Split(str1, " ")
-	for _, s := range arr1 {
+func TestIterator(t *testing.T) {
+	q := NewQueue[string]()
+	str := "Iterator is fun!!"
+	arr := strings.Split(str, " ")
+	for _, s := range arr {
 		q.Enqueue(s)
 	}
 
-	fmt.Println("Iterator: ")
-	it1 := q.Iterator()
-
-	for v, ok := it1.Next(); ok; v, ok = it1.Next() {
-		fmt.Print(" ", v)
+	it := q.Iterator()
+	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
+		fmt.Println(v)
 	}
-
-	fmt.Println()
 }
