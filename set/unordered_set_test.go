@@ -1,27 +1,24 @@
 package set
 
 import (
-	"fmt"
+	"reflect"
+	"sort"
 	"testing"
 )
 
 func TestUnorderedSet_Clear(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
-	// Add elements to the set
 	_ = set.Insert("apple")
 	_ = set.Insert("banana")
 	_ = set.Insert("cherry")
 
-	// Clear the set
 	set.Clear()
 
-	// Check the size of the set
 	if set.Size() != 0 {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 0, set.Size())
 	}
 
-	// Check if all elements are removed from the set
 	elements := set.Items()
 	if len(elements) != 0 {
 		t.Error("Unexpected elements in the set after clearing")
@@ -44,7 +41,6 @@ func TestUnorderedSet_Insert(t *testing.T) {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 3, set.Size())
 	}
 
-	// Check if elements are present in the set
 	if !set.Contain("How") {
 		t.Error("Element 'How' not found in the set")
 	}
@@ -59,20 +55,16 @@ func TestUnorderedSet_Insert(t *testing.T) {
 func TestUnorderedSet_Items(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
-	// Add elements to the set
 	_ = set.Insert("apple")
 	_ = set.Insert("banana")
 	_ = set.Insert("cherry")
 
-	// Get the elements from the set
 	elements := set.Items()
 
-	// Check the number of elements
 	if len(elements) != 3 {
 		t.Errorf("Unexpected number of elements. Expected: %d, Got: %d", 3, len(elements))
 	}
 
-	// Check if all expected elements are present
 	expectedElements := []string{"apple", "banana", "cherry"}
 	for _, element := range expectedElements {
 		found := false
@@ -91,12 +83,10 @@ func TestUnorderedSet_Items(t *testing.T) {
 func TestUnorderedSet_Remove(t *testing.T) {
 	set := NewUnorderedSet[string]()
 
-	// Add elements to the set
 	_ = set.Insert("apple")
 	_ = set.Insert("banana")
 	_ = set.Insert("cherry")
 
-	// Remove an element from the set
 	ok := set.Remove("banana")
 	if !ok {
 		t.Errorf("Expected true, Got %v\n", ok)
@@ -106,12 +96,10 @@ func TestUnorderedSet_Remove(t *testing.T) {
 	if notOk {
 		t.Errorf("Expected false, Got %v\n", notOk)
 	}
-	// Check the size of the set
 	if set.Size() != 2 {
 		t.Errorf("Unexpected set size. Expected: %d, Got: %d", 2, set.Size())
 	}
 
-	// Check if a removed element is no longer present in the set
 	if set.Contain("banana") {
 		t.Error("Element 'banana' still found in the set after removal")
 	}
@@ -119,11 +107,17 @@ func TestUnorderedSet_Remove(t *testing.T) {
 
 func TestUnorderedSet_Iter(t *testing.T) {
 	set := NewUnorderedSet[string]()
-	set.Insert("Franz Kafka")
-	set.Insert("Fyodor Dostoevsky")
-	set.Insert("Leo Tolstoy")
-	set.Insert("Friedrich Nietzsche")
+	authors := []string{"Franz Kafka", "Fyodor Dostoevsky", "Leo Tolstoy", "Friedrich Nietzsche"}
+	for _, author := range authors {
+		set.Insert(author)
+	}
+	var actual []string
 	for r := range set.Iter() {
-		fmt.Println(r)
+		actual = append(actual, r)
+	}
+	sort.Strings(actual)
+	sort.Strings(authors)
+	if !reflect.DeepEqual(actual, authors) {
+		t.Errorf("Expected %v, Got %v\n", authors, actual)
 	}
 }

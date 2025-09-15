@@ -1,7 +1,6 @@
 package queue
 
 import (
-	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -67,11 +66,9 @@ func TestQueueToArray(t *testing.T) {
 	for _, s := range arr {
 		q.Enqueue(s)
 	}
-	fmt.Println(q.ToArray())
-
-	it := q.Iterator()
-	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
-		fmt.Println(v)
+	actual := q.ToArray()
+	if !reflect.DeepEqual(actual, arr) {
+		t.Errorf("Expected %v, Got %v\n", str, actual)
 	}
 }
 
@@ -84,7 +81,14 @@ func TestIterator(t *testing.T) {
 	}
 
 	it := q.Iterator()
+	actual := strings.Builder{}
 	for v, hasNext := it.Next(); hasNext; v, hasNext = it.Next() {
-		fmt.Println(v)
+		actual.WriteString(v)
+		actual.WriteRune(' ')
+	}
+	actualStr := actual.String()
+	actualStr = strings.TrimRight(actualStr, " ")
+	if actualStr != str {
+		t.Errorf("Expected %v, Got %v\n", str, actualStr)
 	}
 }
