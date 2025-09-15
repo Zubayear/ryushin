@@ -61,50 +61,8 @@ func BenchmarkUnorderedSet_StringKeys(b *testing.B) {
 	}
 }
 
-func BenchmarkUnorderedSet_ParallelInsert(b *testing.B) {
-	set := NewUnorderedSet[int]()
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	b.RunParallel(func(pb *testing.PB) {
-		i := 0
-		for pb.Next() {
-			_ = set.Insert(i)
-			i++
-		}
-	})
-}
-
-func BenchmarkUnorderedSet_ParallelContain(b *testing.B) {
-	set := NewUnorderedSet[int]()
-	for i := 0; i < 100000; i++ {
-		_ = set.Insert(i)
-	}
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	b.RunParallel(func(pb *testing.PB) {
-		i := 0
-		for pb.Next() {
-			_ = set.Contain(i % 100000)
-			i++
-		}
-	})
-}
-
-func BenchmarkUnorderedSet_ParallelRemove(b *testing.B) {
-	set := NewUnorderedSet[int]()
-	for i := 0; i < b.N; i++ {
-		_ = set.Insert(i)
-	}
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	b.RunParallel(func(pb *testing.PB) {
-		i := 0
-		for pb.Next() {
-			_ = set.Remove(i)
-			i++
-		}
-	})
-}
+// BenchmarkUnorderedSet_Insert-12                 21979269               315.3 ns/op            55 B/op          0 allocs/op
+//BenchmarkUnorderedSet_Contain-12                15175297               380.9 ns/op             0 B/op          0 allocs/op
+//BenchmarkUnorderedSet_Remove-12                 26081410               455.4 ns/op             0 B/op          0 allocs/op
+//BenchmarkUnorderedSet_Items-12                      1653           3092915 ns/op          802818 B/op          1 allocs/op
+//BenchmarkUnorderedSet_StringKeys-12              6781633               746.9 ns/op            74 B/op          1 allocs/op

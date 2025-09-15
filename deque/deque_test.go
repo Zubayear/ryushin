@@ -297,12 +297,10 @@ func TestConcurrency(t *testing.T) {
 
 	select {
 	case <-done:
-		// Completed
 	case <-timeout:
 		t.Fatalf("TestConcurrency timed out")
 	}
 
-	// Validate results.
 	if got := int(atomic.LoadInt64(&consumed)); got != total {
 		t.Fatalf("consumed %d items; expected %d", got, total)
 	}
