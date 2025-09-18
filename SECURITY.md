@@ -9,8 +9,6 @@ We currently provide security updates for the following versions:
 | 0.4.1     | ✅ Yes    |
 | < 0.1.0   | ❌ No     |
 
----
-
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability in **Ryushin**, **please do NOT create a public GitHub issue**.
@@ -30,8 +28,6 @@ Our commitment:
 - Acknowledge your report **within 48 hours**
 - Provide a status update or fix **within 7 business days**
 - Give you credit in the release notes (if you want)
-
----
 
 ## Responsible Disclosure
 
