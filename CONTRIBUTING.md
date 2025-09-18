@@ -2,8 +2,6 @@
 
 We welcome contributions! Here’s how you can help:
 
----
-
 ## 🛠 How to Contribute
 
 1. **Fork the repository**
