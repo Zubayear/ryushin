@@ -28,7 +28,7 @@ jobs:
             exit 1
           fi
       - name: Run Go Linter
-        uses: golangci/golangci-lint-action@f08454af877ea2a5246a58683951857b61853eab
+        uses: golangci/golangci-lint-action@c7c1219093bae1f72610c5fd1a51a674647863f8
         with:
           version: latest
       - name: Run tests
@@ -40,7 +40,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - uses: codespell-project/actions-codespell@8d1a4b1bd974b8082be0842c2e7e57c8bf6b9b63
+      - uses: codespell-project/actions-codespell@8f01853be192eb0f849a5c7d721450e7a467c579
         with:
           ignore_words_list: "actualy,nwe"
           skip: 'go.mod,go.sum'
