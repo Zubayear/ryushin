@@ -187,7 +187,6 @@ func (t *Trie) Search(word string) bool {
 // Algorithm Steps:
 //   - Traverse the Trie for each character in the prefix.
 //   - If at any point a character is missing, return false.
-//   - If at any point a character is missing, return false.
 //   - If traversal succeeds, return true.
 //
 // Time Complexity: O(K), where K = length of the prefix

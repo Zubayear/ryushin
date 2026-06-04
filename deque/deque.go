@@ -95,11 +95,8 @@ func (d *Deque[T]) PeekLast() (T, error) {
 //
 // Time Complexity: O(n)
 func (d *Deque[T]) Remove(elem T) bool {
-	ok, err := d.data.Remove(elem)
-	if err != nil {
-		return false
-	}
-	return ok == elem
+	_, err := d.data.Remove(elem)
+	return err == nil
 }
 
 // Size returns the number of elements in the deque.

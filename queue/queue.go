@@ -179,6 +179,8 @@ func (q *Queue[T]) IsEmpty() bool {
 //
 // Complexity: O(1)
 func (q *Queue[T]) Size() int {
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
 	return q.count
 }
 
@@ -192,8 +194,8 @@ func (q *Queue[T]) Size() int {
 //
 // Complexity: O(n)
 func (q *Queue[T]) ToString() string {
-	q.mutex.Lock()
-	defer q.mutex.Unlock()
+	q.mutex.RLock()
+	defer q.mutex.RUnlock()
 	var result strings.Builder
 	result.WriteString("[")
 	for r := q.front; r <= q.rear-1; r++ {
@@ -219,6 +221,7 @@ func (q *Queue[T]) Clear() {
 	q.rear = 0
 	q.count = 0
 	q.cap = 16
+	q.data = make([]T, q.cap)
 }
 
 // ToArray returns a array representation of the queue elements in FIFO order.
@@ -259,9 +262,13 @@ func (q *Queue[T]) Iterator() *Iterator[T] {
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
 
-	// copy snapshot
-	snapshot := make([]T, q.Size())
-	copy(snapshot, q.data)
+	// Copy elements honoring circular order (front..rear) so the snapshot is in
+	// FIFO order. Copying q.data directly would ignore front/rear and yield
+	// stale or zeroed slots after dequeues/wrap-around.
+	snapshot := make([]T, q.count)
+	for i := 0; i < q.count; i++ {
+		snapshot[i] = q.data[(q.front+i)%q.cap]
+	}
 
 	return &Iterator[T]{data: snapshot, idx: 0}
 }

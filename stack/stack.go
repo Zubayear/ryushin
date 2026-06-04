@@ -142,8 +142,12 @@ func (s *Stack[T]) Pop() (T, error) {
 //
 // Complexity: O(1)
 func (s *Stack[T]) Peek() (T, error) {
+	s.lock.RLock()
+	defer s.lock.RUnlock()
 	var zero T
-	if s.IsEmpty() {
+	// Inline the emptiness check instead of calling IsEmpty(): RWMutex read
+	// locks are not reentrant and the value read must happen under the same lock.
+	if s.top == -1 {
 		return zero, errors.New("stack empty")
 	}
 	return s.data[s.top], nil
@@ -153,8 +157,8 @@ func (s *Stack[T]) Peek() (T, error) {
 //
 // Complexity: O(1)
 func (s *Stack[T]) Size() int {
-	s.lock.Lock()
-	defer s.lock.Unlock()
+	s.lock.RLock()
+	defer s.lock.RUnlock()
 	return s.top + 1
 }
 
@@ -203,12 +207,14 @@ func (s *Stack[T]) ValueAt(pos int) (T, error) {
 }
 
 // Clear removes all elements from the stack and resets it to an empty state.
-// After clearing, the underlying slice is set to nil to free memory.
+// The underlying slice is reallocated at the default initial capacity so the
+// stack remains usable (and releases the previously held backing array).
 //
 // Complexity: O(1)
 func (s *Stack[T]) Clear() {
 	s.lock.Lock()
 	defer s.lock.Unlock()
+	s.cap = 16
 	s.top = -1
-	s.data = nil
+	s.data = make([]T, s.cap)
 }

@@ -31,8 +31,8 @@ jobs:
         uses: golangci/golangci-lint-action@f08454af877ea2a5246a58683951857b61853eab
         with:
           version: latest
-      - name: Run tests
-        run: go test ./...
+      - name: Run tests (with race detector)
+        run: go test -race ./...
   codespell:
     name: Check for spelling
     runs-on: ubuntu-latest

@@ -95,12 +95,12 @@ func (us *UnorderedSet[T]) Clear() {
 
 // Items return a slice containing all elements in the set.
 // The order of elements is not guaranteed.
-// Algorithm: Iterate over the map keys and append to a slice. Lock acquired for writing.
+// Algorithm: Iterate over the map keys and append to a slice. Read lock acquired.
 //
 // Time Complexity: O(n), where n = number of elements in the set
 func (us *UnorderedSet[T]) Items() []T {
-	us.lockObj.Lock()
-	defer us.lockObj.Unlock()
+	us.lockObj.RLock()
+	defer us.lockObj.RUnlock()
 	elements := make([]T, 0, len(us.items))
 	for element := range us.items {
 		elements = append(elements, element)

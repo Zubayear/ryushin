@@ -1,8 +1,10 @@
 /*
-Package priorityqueue provides a generic, thread-safe binary max-heap(default) implementation in Go.
+Package priorityqueue provides a generic, thread-safe binary heap implementation in Go.
 
-A BinaryHeap is a priority queue where the smallest element is always at the root.
-It supports insertion, retrieval of the minimum element, and removal while maintaining
+By default a BinaryHeap is a max-heap: the largest element (per the natural ordering
+of T) is always at the root. Supplying a custom comparator via
+NewBinaryHeapWithComparator lets you build a min-heap or any other ordering.
+It supports insertion, retrieval of the root element, and removal while maintaining
 the heap property.
 
 The type parameter T must satisfy constraints.Ordered (supports <, > operators).
@@ -150,7 +152,10 @@ func NewBinaryHeapWithComparator[T any](cmp func(a, b T) bool) *BinaryHeap[T] {
 func (bh *BinaryHeap[T]) IsEmpty() bool {
 	bh.mutex.RLock()
 	defer bh.mutex.RUnlock()
-	return bh.Size() == 0
+	// Read len(bh.data) directly rather than calling Size(): sync.RWMutex read
+	// locks are not reentrant, so calling Size() (which also takes RLock) here
+	// can deadlock when a writer is contending for the lock.
+	return len(bh.data) == 0
 }
 
 // Clear removes all elements from the heap.
