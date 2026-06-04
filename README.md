@@ -22,7 +22,6 @@ It is designed to help Go developers stop reinventing the wheel by providing pro
   - `LinkedList`
   - `Set`
 - Tree structures:
-  - `TreeMap(Red-Black Tree/AVL Tree)`
   - `Trie`
 - Priority structures:
   - `PriorityQueue(Binary Heap)` (min & max)
@@ -41,18 +40,20 @@ package main
 
 import (
     "fmt"
-    "github.com/Zubayear/ryushin"
+
+    "github.com/Zubayear/ryushin/trie"
 )
 
 func main() {
-    tr := NewTrie()
+    tr := trie.NewTrie()
 
-	words := []string{"hello", "helium", "he", "hero"}
-	for _, w := range words {
-		tr.Insert(w)
-	}
-	
-	ok := tr.Search("hello")
+    words := []string{"hello", "helium", "he", "hero"}
+    for _, w := range words {
+        tr.Insert(w)
+    }
+
+    ok := tr.Search("hello")
+    fmt.Println(ok) // true
 }
 ```
 

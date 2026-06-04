@@ -120,6 +120,11 @@ func (dl *DoublyLinkedList[T]) Add(elem T) (bool, error) {
 func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
+	return dl.addLast(elem)
+}
+
+// addLast inserts an element at the tail. The caller must hold dl.mutex.
+func (dl *DoublyLinkedList[T]) addLast(elem T) (bool, error) {
 	if dl.size == 0 {
 		node := NewListNode(elem, nil, nil)
 		dl.head = node
@@ -137,6 +142,11 @@ func (dl *DoublyLinkedList[T]) AddLast(elem T) (bool, error) {
 func (dl *DoublyLinkedList[T]) AddFirst(elem T) (bool, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
+	return dl.addFirst(elem)
+}
+
+// addFirst inserts an element at the head. The caller must hold dl.mutex.
+func (dl *DoublyLinkedList[T]) addFirst(elem T) (bool, error) {
 	if dl.size == 0 {
 		node := NewListNode(elem, nil, nil)
 		dl.head = node
@@ -155,14 +165,16 @@ func (dl *DoublyLinkedList[T]) AddFirst(elem T) (bool, error) {
 //
 // Time Complexity: O(n)
 func (dl *DoublyLinkedList[T]) AddAt(idx int, elem T) (bool, error) {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
 	if idx < 0 || idx > dl.size {
 		return false, errors.New("invalid index")
 	}
 	if idx == 0 {
-		return dl.AddFirst(elem)
+		return dl.addFirst(elem)
 	}
 	if idx == dl.size {
-		return dl.AddLast(elem)
+		return dl.addLast(elem)
 	}
 	temp := dl.head
 
@@ -205,6 +217,11 @@ func (dl *DoublyLinkedList[T]) PeekLast() (T, error) {
 func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
+	return dl.removeFirst()
+}
+
+// removeFirst deletes and returns the head element. The caller must hold dl.mutex.
+func (dl *DoublyLinkedList[T]) removeFirst() (T, error) {
 	var zero T
 	if dl.size == 0 {
 		return zero, errors.New("linked list empty")
@@ -224,6 +241,11 @@ func (dl *DoublyLinkedList[T]) RemoveFirst() (T, error) {
 func (dl *DoublyLinkedList[T]) RemoveLast() (T, error) {
 	dl.mutex.Lock()
 	defer dl.mutex.Unlock()
+	return dl.removeLast()
+}
+
+// removeLast deletes and returns the tail element. The caller must hold dl.mutex.
+func (dl *DoublyLinkedList[T]) removeLast() (T, error) {
 	var zero T
 	if dl.size == 0 {
 		return zero, errors.New("linked list empty")
@@ -239,13 +261,14 @@ func (dl *DoublyLinkedList[T]) RemoveLast() (T, error) {
 	return value, nil
 }
 
-// removeNode deletes a given node from the list and relink neighbors. O(1)
+// removeNode deletes a given node from the list and relinks neighbors. O(1)
+// The caller must hold dl.mutex.
 func (dl *DoublyLinkedList[T]) removeNode(node *ListNode[T]) (T, error) {
 	if node.prev == nil {
-		return dl.RemoveFirst()
+		return dl.removeFirst()
 	}
 	if node.next == nil {
-		return dl.RemoveLast()
+		return dl.removeLast()
 	}
 	node.next.prev = node.prev
 	node.prev.next = node.next
@@ -258,6 +281,8 @@ func (dl *DoublyLinkedList[T]) removeNode(node *ListNode[T]) (T, error) {
 
 // Remove deletes the first occurrence of a given element. O(n)
 func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
 	var zero T
 	if dl.size == 0 {
 		return zero, errors.New("linked list empty")
@@ -273,6 +298,8 @@ func (dl *DoublyLinkedList[T]) Remove(elem T) (T, error) {
 
 // RemoveAt removes and returns the element at a specific index. O(n)
 func (dl *DoublyLinkedList[T]) RemoveAt(idx int) (T, error) {
+	dl.mutex.Lock()
+	defer dl.mutex.Unlock()
 	var zero T
 	if idx < 0 || idx >= dl.size {
 		return zero, errors.New("invalid index")
@@ -324,16 +351,24 @@ func (dl *DoublyLinkedList[T]) Contains(elem T) (bool, error) {
 }
 
 // Iterate returns a channel-based iterator for traversing the list.
+//
+// It takes a point-in-time snapshot under the read lock and releases the lock
+// before streaming. This avoids holding dl.mutex for the lifetime of the
+// iteration, which would otherwise deadlock writers if the consumer stopped
+// reading the channel early.
 func (dl *DoublyLinkedList[T]) Iterate() Iterator[T] {
+	dl.mutex.RLock()
+	snapshot := make([]T, 0, dl.size)
+	for iterNode := dl.head; iterNode != nil; iterNode = iterNode.next {
+		snapshot = append(snapshot, iterNode.val)
+	}
+	dl.mutex.RUnlock()
+
 	iterChan := make(chan T)
 	go func() {
-		dl.mutex.RLock()
-		defer dl.mutex.RUnlock()
 		defer close(iterChan)
-		iterNode := dl.head
-		for iterNode != nil {
-			iterChan <- iterNode.val
-			iterNode = iterNode.next
+		for _, v := range snapshot {
+			iterChan <- v
 		}
 	}()
 	return iterChan
